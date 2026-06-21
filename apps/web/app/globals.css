@@ -471,6 +471,22 @@ h1 {
   box-shadow: var(--shadow-hover);
 }
 
+.cover-hero {
+  min-height: 220px;
+  border-radius: var(--radius);
+  margin-bottom: 1.25rem;
+}
+
+.deliverable-page .cover-hero {
+  width: min(1200px, calc(100% - 1.5rem));
+  margin: 0.85rem auto 1rem;
+}
+
+.pin-cover-link {
+  display: block;
+  text-decoration: none;
+}
+
 .pin-cover {
   display: flex;
   align-items: center;

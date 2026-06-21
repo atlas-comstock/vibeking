@@ -9,7 +9,14 @@ import { StatusBadge } from "./StatusBadge";
 export function WishCard({ wish, locale }: { wish: Wish; locale: Locale }) {
   return (
     <article className="card wish-card wish-card-with-cover">
-      <CardCover href={`/wishes/${wish.id}`} seed={wish.id} type="wish" />
+      <CardCover
+        href={`/wishes/${wish.id}`}
+        seed={wish.id}
+        type="wish"
+        title={wish.title}
+        tags={wish.tags}
+        coverUrl={wish.coverUrl}
+      />
       <div className="card-header">
         <StatusBadge status={wish.status} locale={locale} />
         <span className="meta-muted">{formatDate(wish.createdAt, locale)}</span>

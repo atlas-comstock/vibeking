@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { DeliverableDetail } from "@vibeking/shared";
 import type { Locale } from "@/lib/locale";
+import { CoverHero } from "@/components/CoverHero";
 import { DeliverablePreview } from "@/components/DeliverablePreview";
 import { LikeButton } from "@/components/LikeButton";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -78,6 +79,14 @@ export function DeliverableExperience({ deliverable, locale }: Props) {
 
   return (
     <main className={`deliverable-page ${immersive ? "deliverable-page-immersive" : ""}`}>
+      {!immersive && (
+        <CoverHero
+          seed={deliverable.id}
+          type="deliverable"
+          title={deliverable.title}
+          siteUrl={deliverable.siteUrl}
+        />
+      )}
       <div className="deliverable-page-header">
         <div className="detail-header">
           <StatusBadge status={deliverable.status} locale={locale} />

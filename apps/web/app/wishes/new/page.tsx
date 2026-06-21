@@ -46,6 +46,7 @@ async function createWishAction(formData: FormData) {
         tags,
         budgetCents,
         budgetCurrency: String(formData.get("budgetCurrency") ?? "CNY"),
+        coverUrl: String(formData.get("coverUrl") ?? "").trim() || null,
         deadline: deadlineRaw || null,
       },
       { cookieHeader, csrfToken: session.csrfToken, clientIp },
@@ -90,6 +91,16 @@ export default async function NewWishPage({ searchParams }: Props) {
           <label>
             {t(labels.wish.tags, locale)} (comma-separated)
             <input name="tags" className="input" placeholder="landing-page, web" />
+          </label>
+          <label>
+            {t(labels.wish.coverUrl, locale)}
+            <span className="field-hint">{t(labels.wish.coverUrlHint, locale)}</span>
+            <input
+              name="coverUrl"
+              type="url"
+              className="input"
+              placeholder="https://..."
+            />
           </label>
           <label>
             {t(labels.wish.budget, locale)}

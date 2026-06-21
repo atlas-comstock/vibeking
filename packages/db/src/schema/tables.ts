@@ -61,6 +61,7 @@ export const wishes = pgTable(
     title: varchar("title", { length: 200 }).notNull(),
     description: text("description").notNull(),
     tags: text("tags").array().notNull().default([]),
+    coverUrl: varchar("cover_url", { length: 2000 }),
     budgetCents: integer("budget_cents"),
     budgetCurrency: varchar("budget_currency", { length: 3 }).default("CNY"),
     deadline: timestamp("deadline", { withTimezone: true }),

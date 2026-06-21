@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getCoverVisual, googleFaviconUrl, parseOgImage } from "./cover";
+import {
+  buildPosterCoverUrl,
+  getCoverVisual,
+  googleFaviconUrl,
+  parseOgImage,
+} from "./cover";
 
 describe("cover helpers", () => {
   it("picks stable visuals from seed", () => {
@@ -13,6 +18,18 @@ describe("cover helpers", () => {
   it("parses og:image from html", () => {
     const html = `<meta property="og:image" content="https://cdn.example.com/hero.png" />`;
     expect(parseOgImage(html)).toBe("https://cdn.example.com/hero.png");
+  });
+
+  it("builds poster cover url", () => {
+    const url = buildPosterCoverUrl({
+      type: "wish",
+      seed: "abc",
+      title: "桌游万境奇旅",
+      tags: ["桌游", "游戏"],
+    });
+    expect(url).toContain("/api/cover/poster?");
+    expect(url).toContain("seed=abc");
+    expect(url).toContain("title=");
   });
 
   it("builds google favicon url", () => {

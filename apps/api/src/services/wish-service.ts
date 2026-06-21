@@ -22,10 +22,26 @@ export type CreateWishInput = {
   title: string;
   description: string;
   tags?: string[];
+  coverUrl?: string | null;
   budgetCents?: number | null;
   budgetCurrency?: string;
   deadline?: string | null;
 };
+
+function normalizeCoverUrl(value: string | null | undefined): string | null {
+  if (value == null) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  try {
+    const parsed = new URL(trimmed);
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      throw new Error("invalid protocol");
+    }
+    return parsed.href;
+  } catch {
+    throw new AppError("VALIDATION_ERROR", "配图链接格式不对", 400);
+  }
+}
 
 export type ListWishesQuery = {
   limit: number;
@@ -108,6 +124,7 @@ function mapWishRow(
     title: wish.title,
     description: wish.description,
     tags: wish.tags,
+    coverUrl: wish.coverUrl ?? null,
     budgetCents: wish.budgetCents,
     budgetCurrency: wish.budgetCurrency,
     deadline: wish.deadline?.toISOString() ?? null,
@@ -145,6 +162,8 @@ export async function createWish(authorId: string, input: CreateWishInput) {
     }
   }
 
+  const coverUrl = normalizeCoverUrl(input.coverUrl);
+
   const db = getDb();
   const [created] = await db
     .insert(wishes)
@@ -153,6 +172,7 @@ export async function createWish(authorId: string, input: CreateWishInput) {
       title,
       description,
       tags: input.tags ?? [],
+      coverUrl,
       budgetCents: input.budgetCents ?? null,
       budgetCurrency: input.budgetCurrency ?? "CNY",
       deadline,
@@ -334,6 +354,7 @@ export async function patchWish(
   if (patch.title !== undefined) updates.title = patch.title;
   if (patch.description !== undefined) updates.description = patch.description;
   if (patch.tags !== undefined) updates.tags = patch.tags;
+  if (patch.coverUrl !== undefined) updates.coverUrl = normalizeCoverUrl(patch.coverUrl);
   if (patch.budgetCents !== undefined) updates.budgetCents = patch.budgetCents;
   if (patch.budgetCurrency !== undefined) updates.budgetCurrency = patch.budgetCurrency;
   if (patch.deadline !== undefined) {

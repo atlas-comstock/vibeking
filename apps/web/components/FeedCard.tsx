@@ -11,6 +11,7 @@ export type FeedCardItem = {
   description?: string;
   siteUrl?: string;
   coverEmoji?: string;
+  coverUrl?: string | null;
   tags: string[];
   source?: string;
   likeCount: number;
@@ -62,8 +63,11 @@ export function FeedCard({
         href={item.href}
         seed={item.id}
         type={item.type}
+        title={item.title}
+        tags={item.tags}
         siteUrl={item.siteUrl}
         coverEmoji={item.coverEmoji}
+        coverUrl={item.coverUrl}
       />
       <div className="pin-body">
         <p className="pin-type">{t(TYPE_LABEL[item.type], locale)}</p>

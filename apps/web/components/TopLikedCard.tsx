@@ -10,6 +10,7 @@ export type TopLikedWishItem = {
   title: string;
   description: string;
   tags: string[];
+  coverUrl?: string | null;
   likeCount: number;
   viewCount: number;
   href: string;
@@ -42,7 +43,10 @@ export function TopLikedCard({ item, locale, rank }: Props) {
         href={item.href}
         seed={item.id}
         type={item.type}
+        title={item.title}
+        tags={item.type === "wish" ? item.tags : undefined}
         siteUrl={item.type === "deliverable" ? item.siteUrl : undefined}
+        coverUrl={item.type === "wish" ? item.coverUrl : undefined}
         rank={rank}
       />
       <div className="pin-body">

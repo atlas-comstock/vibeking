@@ -1,0 +1,1 @@
+ALTER TABLE "wishes" ADD COLUMN IF NOT EXISTS "cover_url" varchar(2000);

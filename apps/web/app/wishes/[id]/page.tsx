@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
+import { CoverHero } from "@/components/CoverHero";
 import { Nav } from "@/components/Nav";
 import { StatusBadge } from "@/components/StatusBadge";
 import { LikeButton } from "@/components/LikeButton";
@@ -80,6 +81,13 @@ export default async function WishDetailPage({ params, searchParams }: Props) {
     <>
       <Nav />
       <main className="container page-narrow">
+        <CoverHero
+          seed={wish.id}
+          type="wish"
+          title={wish.title}
+          tags={wish.tags}
+          coverUrl={wish.coverUrl}
+        />
         <div className="detail-header">
           <StatusBadge status={wish.status} locale={locale} />
           <span className="meta-muted">{formatDate(wish.createdAt, locale)}</span>

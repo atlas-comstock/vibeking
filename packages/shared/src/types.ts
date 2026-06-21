@@ -58,6 +58,7 @@ export type Wish = {
   title: string;
   description: string;
   tags: string[];
+  coverUrl?: string | null;
   budgetCents: number | null;
   budgetCurrency: string;
   deadline: string | null;

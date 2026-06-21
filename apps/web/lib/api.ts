@@ -138,6 +138,7 @@ export const api = {
       title: string;
       description: string;
       tags: string[];
+      coverUrl?: string | null;
       budgetCents?: number | null;
       budgetCurrency?: string;
       deadline?: string | null;
@@ -185,6 +186,7 @@ export const api = {
         siteUrl?: string;
         slug?: string;
         coverEmoji?: string;
+        coverUrl?: string | null;
         tags: string[];
         source?: string;
         likeCount: number;

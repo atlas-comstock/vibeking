@@ -25,6 +25,7 @@ export default async function HomePage() {
     title: String(item.title),
     description: String(item.description ?? ""),
     tags: Array.isArray(item.tags) ? (item.tags as string[]) : [],
+    coverUrl: item.coverUrl ? String(item.coverUrl) : null,
     likeCount: Number(item.likeCount ?? 0),
     viewCount: Number(item.viewCount ?? 0),
     href: String(item.href ?? `/wishes/${item.id}`),

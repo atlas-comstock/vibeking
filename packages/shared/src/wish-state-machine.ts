@@ -87,6 +87,7 @@ export type WishPatchFields = {
   title?: string;
   description?: string;
   tags?: string[];
+  coverUrl?: string | null;
   budgetCents?: number | null;
   budgetCurrency?: string;
   deadline?: string | null;
@@ -98,6 +99,7 @@ const EDITABLE_FIELDS: Record<WishStatus, (keyof WishPatchFields)[]> = {
     "title",
     "description",
     "tags",
+    "coverUrl",
     "budgetCents",
     "budgetCurrency",
     "deadline",

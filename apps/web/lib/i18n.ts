@@ -98,6 +98,11 @@ export const labels = {
     like: { zh: "点赞", en: "Like" },
     views: { zh: "浏览", en: "Views" },
     tags: { zh: "标签", en: "Tags" },
+    coverUrl: { zh: "配图链接", en: "Cover image URL" },
+    coverUrlHint: {
+      zh: "可以不填～不填会自动生成可爱海报",
+      en: "Optional — leave blank for an auto-generated cute poster",
+    },
     deliverables: { zh: "交付物", en: "Deliverables" },
     accept: { zh: "收下 ✓", en: "Accept ✓" },
     reject: { zh: "退回", en: "Reject" },

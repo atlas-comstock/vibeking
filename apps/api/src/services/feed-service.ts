@@ -12,6 +12,7 @@ export type FeedItem = {
   siteUrl?: string;
   slug?: string;
   coverEmoji?: string;
+  coverUrl?: string | null;
   tags: string[];
   source?: string;
   likeCount: number;
@@ -48,6 +49,7 @@ export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }
         title: wishes.title,
         description: wishes.description,
         tags: wishes.tags,
+        coverUrl: wishes.coverUrl,
         likeCount: wishes.likeCount,
         viewCount: wishes.viewCount,
         createdAt: wishes.createdAt,
@@ -138,6 +140,7 @@ export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }
       title: w.title,
       description: w.description,
       coverEmoji: "💫",
+      coverUrl: w.coverUrl ?? null,
       tags: w.tags,
       likeCount: w.likeCount,
       viewCount: w.viewCount,
