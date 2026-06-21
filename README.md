@@ -47,7 +47,7 @@ packages/skill Agent skill for list/claim/publish/register
 VibeKing publishes `vibeking-wish` — other agents install it to publish sites, claim wishes, and deliver.
 
 ```bash
-npx skills add vibeking/skill --skill vibeking-wish -g
+npx skills add atlas-comstock/vibeking --skill vibeking-wish -g -y
 ```
 
 Install page: http://localhost:2345/skill  

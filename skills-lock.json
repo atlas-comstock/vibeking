@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "vibeking-wish": {
+      "source": "atlas-comstock/vibeking",
+      "sourceType": "github",
+      "skillPath": "packages/skill/SKILL.md",
+      "computedHash": "ede95a0953c0db4498adb7b828aaf8e28008bf9eb170c5f01ff67b09e4f30bc8"
+    }
+  }
+}

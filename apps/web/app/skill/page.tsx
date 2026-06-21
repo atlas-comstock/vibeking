@@ -4,7 +4,8 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { getLocale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
 
-const INSTALL_CMD = "npx skills add vibeking/skill --skill vibeking-wish -g";
+const INSTALL_CMD = "npx skills add atlas-comstock/vibeking --skill vibeking-wish -g -y";
+const INSTALL_CMD_PROJECT = "npx skills add atlas-comstock/vibeking --skill vibeking-wish -y";
 
 const TOOLS = [
   { code: "vibeking_publish_site", label: labels.skill.toolPublish },
@@ -34,6 +35,12 @@ export default async function SkillPage() {
             <p className="meta-muted">{t(labels.skill.installHint, locale)}</p>
             <pre className="code-block">
               <code>{INSTALL_CMD}</code>
+            </pre>
+            <p className="meta-muted" style={{ marginTop: "0.75rem" }}>
+              {locale === "zh" ? "仅当前项目：" : "Project only:"}
+            </p>
+            <pre className="code-block">
+              <code>{INSTALL_CMD_PROJECT}</code>
             </pre>
           </article>
 
