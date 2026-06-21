@@ -46,7 +46,10 @@ export default async function DashboardPage() {
           )}
         </section>
 
-        <ApiKeyManager initialKeys={keys} locale={locale} />
+        <section className="section">
+          <p className="meta-muted">{t(labels.skill.apiKeysHint, locale)}</p>
+          <ApiKeyManager initialKeys={keys} locale={locale} />
+        </section>
       </main>
     </>
   );

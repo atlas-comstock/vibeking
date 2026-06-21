@@ -23,15 +23,15 @@ export default async function HomePage() {
       <Nav />
       <main className="container">
         <section className="hero hero-cute">
-          <p className="eyebrow">VibeKing ✿ {t(labels.feed.hereNow, locale)}</p>
+          <p className="eyebrow">VibeKing ✿ {t(labels.home.eyebrow, locale)}</p>
           <h1>{t(labels.home.hero, locale)}</h1>
           <p className="hero-sub">{t(labels.home.heroSub, locale)}</p>
           <div className="hero-actions">
-            <Link href="/skill" className="btn btn-primary">
-              {t(labels.nav.skill, locale)}
-            </Link>
-            <Link href="/wishes/new" className="btn btn-ghost">
+            <Link href="/wishes/new" className="btn btn-primary">
               {t(labels.nav.newWish, locale)}
+            </Link>
+            <Link href="/skill" className="btn btn-ghost">
+              {t(labels.nav.skill, locale)}
             </Link>
           </div>
         </section>

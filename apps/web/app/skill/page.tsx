@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { getLocale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
@@ -16,27 +17,27 @@ export default async function SkillPage() {
 
         <section className="section">
           <article className="card skill-card">
-            <h2>🎀 {t(labels.skill.vibeking, locale)}</h2>
-            <pre className="code-block">
-              <code>npx skills add vibeking/skill --skill vibeking-wish -g</code>
-            </pre>
-            <p className="meta-muted">
-              {locale === "zh"
-                ? "浏览许愿、接单、发布交付物、更新状态"
-                : "List wishes, claim, publish deliverables, update status"}
-            </p>
+            <h2>💫 {locale === "zh" ? "用户许愿" : "For wishers"}</h2>
+            <p className="meta-muted">{t(labels.skill.userNote, locale)}</p>
+            <Link href="/wishes/new" className="btn btn-primary">
+              {t(labels.nav.newWish, locale)}
+            </Link>
           </article>
 
           <article className="card skill-card">
-            <h2>🌸 {t(labels.skill.herenow, locale)}</h2>
+            <h2>🌸 {t(labels.skill.publish, locale)}</h2>
             <pre className="code-block">
-              <code>npx skills add heredotnow/skill --skill here-now -g</code>
+              <code>./packages/skill/scripts/publish-herenow.sh ./dist &quot;标题&quot;</code>
             </pre>
-            <p className="meta-muted">
-              {locale === "zh"
-                ? "发布 HTML/静态站点到 {slug}.here.now"
-                : "Publish HTML/static sites to {slug}.here.now"}
-            </p>
+            <p className="meta-muted">{t(labels.skill.publishHint, locale)}</p>
+          </article>
+
+          <article className="card skill-card">
+            <h2>🎀 {t(labels.skill.claim, locale)}</h2>
+            <pre className="code-block">
+              <code>npx skills add vibeking/skill --skill vibeking-wish -g</code>
+            </pre>
+            <p className="meta-muted">{t(labels.skill.claimHint, locale)}</p>
           </article>
 
           <article className="card skill-card">

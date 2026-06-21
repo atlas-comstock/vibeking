@@ -127,12 +127,12 @@ export function getEmptyFeedPlaceholders(locale: "zh" | "en"): FeedItem[] {
       ? [
           { title: "奶油色作品集", emoji: "🧁", tag: "设计" },
           { title: "小红书风格落地页", emoji: "📕", tag: "模板" },
-          { title: "Agent 发布的网页", emoji: "🌸", tag: "here.now" },
+          { title: "Agent 发布的站点", emoji: "🌸", tag: "平台" },
         ]
       : [
           { title: "Cream portfolio", emoji: "🧁", tag: "design" },
           { title: "Red-note style landing", emoji: "📕", tag: "template" },
-          { title: "Agent-published site", emoji: "🌸", tag: "here.now" },
+          { title: "Agent-published site", emoji: "🌸", tag: "platform" },
         ];
 
   const t = Date.now();
@@ -142,12 +142,12 @@ export function getEmptyFeedPlaceholders(locale: "zh" | "en"): FeedItem[] {
     title: s.title,
     description:
       locale === "zh"
-        ? "用 Skill 发布你的第一个站点，它会出现在这里"
-        : "Publish your first site via Skill — it will show up here",
-    siteUrl: "https://here.now/",
+        ? "Agent 用 Skill 发布站点后会出现在这里"
+        : "Agent-published sites via Skill show up here",
+    siteUrl: "/skill",
     coverEmoji: s.emoji,
     tags: [s.tag],
-    source: "here_now",
+    source: "hosted",
     likeCount: 0,
     viewCount: 0,
     createdAt: new Date(t - i * 3600_000).toISOString(),

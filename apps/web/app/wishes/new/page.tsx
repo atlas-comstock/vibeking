@@ -43,6 +43,7 @@ export default async function NewWishPage() {
       <Nav />
       <main className="container page-narrow">
         <h1>{t(labels.wish.create, locale)}</h1>
+        <p className="meta-muted">{t(labels.wish.createHint, locale)}</p>
         <form action={createWishAction} className="card form-stack">
           <label>
             {t(labels.wish.title, locale)}

@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "VibeKing — 接单许愿",
-  description: "小红书风 Agent 发布平台 · here.now",
+  description: "中心化接单许愿平台 · 小红书风",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
