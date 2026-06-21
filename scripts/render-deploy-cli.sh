@@ -37,10 +37,14 @@ echo "→ Creating service vibeking-api (or use Blueprint if this fails)..."
 
 ARGS=(
   --name vibeking-api
+  --type web_service
   --repo "https://github.com/atlas-comstock/vibeking"
   --branch master
+  --runtime node
   --region singapore
   --plan free
+  --build-command "pnpm install --frozen-lockfile && pnpm --filter @vibeking/api build"
+  --start-command "node apps/api/dist/index.js"
   --health-check-path /health
   --env-var "DATABASE_URL=${DATABASE_URL}"
   --env-var "WEB_ORIGIN=${WEB_ORIGIN}"
