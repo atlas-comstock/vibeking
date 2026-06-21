@@ -7,10 +7,6 @@ export const feedRouter = new Hono<AppEnv>();
 feedRouter.get("/", async (c) => {
   const limit = Math.min(Number(c.req.query("limit") ?? 24), 48);
 
-  try {
-    const feed = await getDiscoverFeed(limit);
-    return c.json({ items: feed.items });
-  } catch {
-    return c.json({ items: [] });
-  }
+  const feed = await getDiscoverFeed(limit);
+  return c.json({ items: feed.items });
 });

@@ -24,21 +24,53 @@ export type FeedItem = {
 export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }> {
   const db = getDb();
 
-  const [posts, dels, wishRows] = await Promise.all([
+  const [postsResult, delsResult, wishesResult] = await Promise.allSettled([
     db.select().from(sitePosts).orderBy(desc(sitePosts.createdAt)).limit(100),
     db
-      .select()
+      .select({
+        id: deliverables.id,
+        slug: deliverables.slug,
+        kind: deliverables.kind,
+        title: deliverables.title,
+        description: deliverables.description,
+        externalUrl: deliverables.externalUrl,
+        likeCount: deliverables.likeCount,
+        viewCount: deliverables.viewCount,
+        createdAt: deliverables.createdAt,
+      })
       .from(deliverables)
       .where(eq(deliverables.status, "live"))
       .orderBy(desc(deliverables.createdAt))
       .limit(100),
     db
-      .select()
+      .select({
+        id: wishes.id,
+        title: wishes.title,
+        description: wishes.description,
+        tags: wishes.tags,
+        likeCount: wishes.likeCount,
+        viewCount: wishes.viewCount,
+        createdAt: wishes.createdAt,
+      })
       .from(wishes)
       .where(isNull(wishes.deletedAt))
       .orderBy(desc(wishes.createdAt))
       .limit(100),
   ]);
+
+  const posts = postsResult.status === "fulfilled" ? postsResult.value : [];
+  const dels = delsResult.status === "fulfilled" ? delsResult.value : [];
+  const wishRows = wishesResult.status === "fulfilled" ? wishesResult.value : [];
+
+  if (postsResult.status === "rejected") {
+    console.error("feed: site_posts query failed", postsResult.reason);
+  }
+  if (delsResult.status === "rejected") {
+    console.error("feed: deliverables query failed", delsResult.reason);
+  }
+  if (wishesResult.status === "rejected") {
+    console.error("feed: wishes query failed", wishesResult.reason);
+  }
 
   const items: FeedItem[] = [];
 

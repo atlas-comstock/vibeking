@@ -54,7 +54,15 @@ export async function computeTrendingDeliverables(
 ): Promise<TrendingCachePayload> {
   const db = getDb();
   const rows = await db
-    .select()
+    .select({
+      id: deliverables.id,
+      slug: deliverables.slug,
+      title: deliverables.title,
+      kind: deliverables.kind,
+      likeCount: deliverables.likeCount,
+      viewCount: deliverables.viewCount,
+      createdAt: deliverables.createdAt,
+    })
     .from(deliverables)
     .where(eq(deliverables.status, "live"))
     .orderBy(desc(deliverables.createdAt))
