@@ -144,6 +144,8 @@ export const labels = {
       en: "If preview is blank (site blocks embed),",
     },
     visit: { zh: "打开看看", en: "Open" },
+    immersiveEnter: { zh: "沉浸模式 ⛶", en: "Immersive ⛶" },
+    immersiveExit: { zh: "退出沉浸", en: "Exit immersive" },
     revision: { zh: "版", en: "Rev" },
     claimEnded: { zh: "接单结束", en: "Claim ended" },
   },
