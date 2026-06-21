@@ -121,11 +121,9 @@ export function CoverVisual({
     <div className={coverClass} style={{ background: visual.gradient }}>
       {rank != null && <span className="pin-rank">{rank}</span>}
       {previewUrl && mode === "og" && (
-        // eslint-disable-next-line @next/next/no-img-element
         <img src={previewUrl} alt="" className="pin-cover-photo" loading="lazy" />
       )}
       {previewUrl && mode === "favicon" && (
-        // eslint-disable-next-line @next/next/no-img-element
         <img src={previewUrl} alt="" className="pin-cover-favicon" loading="lazy" />
       )}
       <span className="pin-emoji" aria-hidden>
