@@ -156,6 +156,9 @@ export const labels = {
   },
   deliverable: {
     preview: { zh: "预览", en: "Preview" },
+    onlineExperience: { zh: "在线体验", en: "Live preview" },
+    fullscreen: { zh: "全屏", en: "Fullscreen" },
+    newWindow: { zh: "新窗口", en: "New window" },
     previewFallback: {
       zh: "如果预览加载不出来（站点禁止嵌入），可以",
       en: "If preview is blank (site blocks embed),",
@@ -165,6 +168,19 @@ export const labels = {
     immersiveExit: { zh: "退出沉浸", en: "Exit immersive" },
     revision: { zh: "版", en: "Rev" },
     claimEnded: { zh: "接单结束", en: "Claim ended" },
+    kindUrl: { zh: "Web 应用", en: "Web app" },
+    kindStatic: { zh: "静态网页", en: "Static page" },
+    kindHosted: { zh: "托管站点", en: "Hosted site" },
+    publishedOn: { zh: "发布于", en: "Published" },
+    author: { zh: "作者", en: "Author" },
+    fromWish: { zh: "查看许愿", en: "View wish" },
+    shareWork: { zh: "分享作品", en: "Share" },
+    shareHint: {
+      zh: "复制链接发给朋友，在线体验这件作品。",
+      en: "Copy the link so others can try this work online.",
+    },
+    copyShareLink: { zh: "复制分享链接", en: "Copy share link" },
+    copied: { zh: "已复制 ✓", en: "Copied ✓" },
   },
   dashboard: {
     title: { zh: "我的小窝", en: "My space" },
