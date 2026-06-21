@@ -28,55 +28,60 @@ export default async function DeliverablePage({ params }: Props) {
   return (
     <>
       <Nav />
-      <main className="container">
-        <div className="detail-header">
-          <StatusBadge status={deliverable.status} locale={locale} />
-          {!deliverable.claimActive && (
-            <span className="tag-chip">{t(labels.deliverable.claimEnded, locale)}</span>
-          )}
-        </div>
-        <h1>{deliverable.title}</h1>
-        {deliverable.description && <p className="lead">{deliverable.description}</p>}
-
-        <div className="meta-grid">
-          <div>
-            <span className="meta-label">{t(labels.deliverable.revision, locale)}</span>
-            <span>{deliverable.revisionNumber}</span>
+      <main className="deliverable-page">
+        <div className="deliverable-page-header">
+          <div className="detail-header">
+            <StatusBadge status={deliverable.status} locale={locale} />
+            {!deliverable.claimActive && (
+              <span className="tag-chip">{t(labels.deliverable.claimEnded, locale)}</span>
+            )}
           </div>
-          <div>
-            <span className="meta-label">Agent</span>
-            <Link href={`/agents/${deliverable.agent.handle}`} className="link-accent">
-              @{deliverable.agent.handle}
-            </Link>
-          </div>
-          <div>
-            <span className="meta-label">Wish</span>
-            <Link href={`/wishes/${deliverable.wish.id}`} className="link-accent">
-              {deliverable.wish.title}
-            </Link>
-          </div>
-          <div>
-            <span className="meta-label">{t(labels.wish.likes, locale)}</span>
-            <LikeButton
-              targetType="deliverable"
-              targetId={deliverable.id}
-              initialCount={deliverable.likeCount}
-            />
-          </div>
-        </div>
-
-        <section className="section">
-          <div className="section-header">
-            <h2>{t(labels.deliverable.preview, locale)}</h2>
+          <div className="deliverable-title-row">
+            <div>
+              <h1>{deliverable.title}</h1>
+              {deliverable.description && (
+                <p className="lead deliverable-lead">{deliverable.description}</p>
+              )}
+            </div>
             <a
               href={deliverable.siteUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-ghost"
             >
-              {t(labels.deliverable.visit, locale)}
+              {t(labels.deliverable.visit, locale)} →
             </a>
           </div>
+
+          <div className="meta-grid deliverable-meta-compact">
+            <div>
+              <span className="meta-label">{t(labels.deliverable.revision, locale)}</span>
+              <span>{deliverable.revisionNumber}</span>
+            </div>
+            <div>
+              <span className="meta-label">Agent</span>
+              <Link href={`/agents/${deliverable.agent.handle}`} className="link-accent">
+                @{deliverable.agent.handle}
+              </Link>
+            </div>
+            <div>
+              <span className="meta-label">Wish</span>
+              <Link href={`/wishes/${deliverable.wish.id}`} className="link-accent">
+                {deliverable.wish.title}
+              </Link>
+            </div>
+            <div>
+              <span className="meta-label">{t(labels.wish.likes, locale)}</span>
+              <LikeButton
+                targetType="deliverable"
+                targetId={deliverable.id}
+                initialCount={deliverable.likeCount}
+              />
+            </div>
+          </div>
+        </div>
+
+        <section className="deliverable-preview-stage" aria-label={t(labels.deliverable.preview, locale)}>
           <DeliverablePreview
             slug={deliverable.slug}
             kind={deliverable.kind}

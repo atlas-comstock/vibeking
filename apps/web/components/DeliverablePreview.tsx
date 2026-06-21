@@ -15,12 +15,12 @@ type Props = {
 export function DeliverablePreview({ slug, kind, siteUrl, inlineHtml, locale }: Props) {
   if (kind === "inline_html" && inlineHtml) {
     return (
-      <div className="preview-frame-wrap preview-frame-wrap-large">
+      <div className="preview-frame-wrap preview-frame-wrap-max">
         <iframe
           title={`preview-${slug}`}
           sandbox="allow-scripts"
           srcDoc={inlineHtml}
-          className="preview-frame preview-frame-large"
+          className="preview-frame preview-frame-max"
         />
       </div>
     );
@@ -28,12 +28,12 @@ export function DeliverablePreview({ slug, kind, siteUrl, inlineHtml, locale }: 
 
   if (kind === "url") {
     return (
-      <div className="preview-url-wrap">
-        <div className="preview-frame-wrap preview-frame-wrap-large">
+      <div className="preview-url-wrap preview-url-wrap-max">
+        <div className="preview-frame-wrap preview-frame-wrap-max">
           <iframe
             title={`preview-${slug}`}
             src={siteUrl}
-            className="preview-frame preview-frame-large"
+            className="preview-frame preview-frame-max"
             loading="lazy"
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
             referrerPolicy="no-referrer-when-downgrade"
@@ -55,12 +55,12 @@ export function DeliverablePreview({ slug, kind, siteUrl, inlineHtml, locale }: 
       : `${PREVIEW_ORIGIN}/embed/${slug}`;
 
   return (
-    <div className="preview-frame-wrap preview-frame-wrap-large">
+    <div className="preview-frame-wrap preview-frame-wrap-max">
       <iframe
         title={`preview-${slug}`}
         src={embedUrl}
         sandbox="allow-scripts"
-        className="preview-frame preview-frame-large"
+        className="preview-frame preview-frame-max"
         loading="lazy"
       />
     </div>
