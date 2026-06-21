@@ -92,8 +92,8 @@ export default async function WishDetailPage({ params, searchParams }: Props) {
           <StatusBadge status={wish.status} locale={locale} />
           <span className="meta-muted">{formatDate(wish.createdAt, locale)}</span>
         </div>
-        <h1>{wish.title}</h1>
-        <p className="lead">{wish.description}</p>
+        <h1 className="sr-only">{wish.title}</h1>
+        <p className="lead wish-detail-lead">{wish.description}</p>
 
         <div className="meta-grid">
           <div>

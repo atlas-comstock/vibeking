@@ -44,8 +44,11 @@ export function CoverVisual({
       }),
     [type, seed, title, tags, visual.emoji],
   );
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [mode, setMode] = useState<"og" | "favicon" | "poster">("poster");
+  const staticPreviewUrl = coverUrl ?? (type === "wish" || !siteUrl ? posterUrl : null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(staticPreviewUrl);
+  const [mode, setMode] = useState<"og" | "favicon" | "poster">(
+    staticPreviewUrl ? "og" : "poster",
+  );
 
   useEffect(() => {
     if (coverUrl) {
@@ -106,7 +109,8 @@ export function CoverVisual({
   }, [coverUrl, type, siteUrl, posterUrl]);
 
   const coverClass = [
-    variant === "hero" ? "cover-hero" : "pin-cover",
+    "pin-cover",
+    variant === "hero" ? "cover-hero" : "",
     `pin-cover-type-${type}`,
     `pin-cover-pattern-${visual.pattern}`,
     previewUrl ? "pin-cover-has-media" : "",
