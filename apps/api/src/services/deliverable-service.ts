@@ -41,10 +41,22 @@ export async function getDeliverableBySlug(slug: string) {
   const db = getDb();
   const [row] = await db
     .select({
-      deliverable: deliverables,
+      id: deliverables.id,
+      wishId: deliverables.wishId,
+      agentId: deliverables.agentId,
+      slug: deliverables.slug,
+      kind: deliverables.kind,
+      externalUrl: deliverables.externalUrl,
+      title: deliverables.title,
+      description: deliverables.description,
+      currentVersionId: deliverables.currentVersionId,
+      revisionNumber: deliverables.revisionNumber,
+      viewCount: deliverables.viewCount,
+      likeCount: deliverables.likeCount,
+      status: deliverables.status,
+      createdAt: deliverables.createdAt,
       agentHandle: agentProfiles.handle,
       agentDisplayName: users.displayName,
-      wishId: wishes.id,
       wishTitle: wishes.title,
       wishStatus: wishes.status,
     })
@@ -59,17 +71,17 @@ export async function getDeliverableBySlug(slug: string) {
     throw new AppError("DELIVERABLE_NOT_FOUND", "Deliverable not found", 404);
   }
 
-  const claimActive = await isClaimActive(row.deliverable.wishId, row.deliverable.agentId);
+  const claimActive = await isClaimActive(row.wishId, row.agentId);
 
   let finalizedAt: Date | null = null;
-  if (row.deliverable.currentVersionId) {
+  if (row.currentVersionId) {
     const [version] = await db
       .select({ finalizedAt: deliverableVersions.finalizedAt })
       .from(deliverableVersions)
       .where(
         and(
-          eq(deliverableVersions.deliverableId, row.deliverable.id),
-          eq(deliverableVersions.versionId, row.deliverable.currentVersionId),
+          eq(deliverableVersions.deliverableId, row.id),
+          eq(deliverableVersions.versionId, row.currentVersionId),
         ),
       )
       .limit(1);
@@ -77,22 +89,22 @@ export async function getDeliverableBySlug(slug: string) {
   }
 
   const siteUrl =
-    row.deliverable.kind === "url" && row.deliverable.externalUrl
-      ? row.deliverable.externalUrl
+    row.kind === "url" && row.externalUrl
+      ? row.externalUrl
       : buildSiteUrl(slug, config.siteBaseDomain);
 
   return {
-    id: row.deliverable.id,
-    slug: row.deliverable.slug,
-    kind: row.deliverable.kind,
-    title: row.deliverable.title,
-    description: row.deliverable.description,
+    id: row.id,
+    slug: row.slug,
+    kind: row.kind,
+    title: row.title,
+    description: row.description,
     siteUrl,
-    revisionNumber: row.deliverable.revisionNumber,
-    status: row.deliverable.status,
+    revisionNumber: row.revisionNumber,
+    status: row.status,
     claimActive,
-    viewCount: row.deliverable.viewCount,
-    likeCount: row.deliverable.likeCount,
+    viewCount: row.viewCount,
+    likeCount: row.likeCount,
     agent: {
       handle: row.agentHandle ?? "agent",
       displayName: row.agentDisplayName,
@@ -102,7 +114,7 @@ export async function getDeliverableBySlug(slug: string) {
       title: row.wishTitle,
       status: row.wishStatus,
     },
-    createdAt: row.deliverable.createdAt.toISOString(),
+    createdAt: row.createdAt.toISOString(),
     finalizedAt: finalizedAt?.toISOString() ?? null,
   };
 }
