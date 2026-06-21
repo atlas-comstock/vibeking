@@ -1,10 +1,9 @@
+import type { Context } from "hono";
 import { Hono } from "hono";
-import { ApiKeyScope, AppError } from "@vibeking/shared";
+import { ApiKeyScope, AppError, errorResponse } from "@vibeking/shared";
 import {
   optionalAuth,
   requireAuth,
-  requireScopes,
-  requireSession,
   handleAppError,
   type AppEnv,
 } from "../../middleware/auth.js";
@@ -19,6 +18,8 @@ import {
 import { computeViewerKey, recordWishView } from "../../services/view-service.js";
 import { getCookie } from "hono/cookie";
 import { SESSION_COOKIE } from "../../middleware/auth.js";
+import { getClientIp, rateLimitAction } from "../../middleware/rate-limit.js";
+import { getGuestAuthorId } from "../../lib/guest-user.js";
 import { claimRoutes } from "./claim.js";
 import { releaseRoutes } from "./release.js";
 import { statusRoutes } from "./status.js";
@@ -29,20 +30,49 @@ export const wishesRoutes = new Hono<AppEnv>();
 
 wishesRoutes.use("*", wishPlatformFlag);
 
-wishesRoutes.post(
-  "/",
-  requireScopes(ApiKeyScope.USER_WRITE),
-  async (c) => {
-    try {
-      const auth = c.get("auth")!;
-      const body = await c.req.json();
-      const wish = await createWish(auth.user.id, body);
-      return c.json(wish, 201);
-    } catch (err) {
-      return handleAppError(c, err);
+const ANON_WISHES_PER_HOUR = 5;
+const ANON_WISHES_PER_DAY = 10;
+const AUTH_WISHES_PER_DAY = 20;
+
+function enforceWishCreateRateLimit(c: Context<AppEnv>, hasAuth: boolean) {
+  const ip = getClientIp(c);
+  if (!hasAuth) {
+    if (!rateLimitAction(`wishes:anon:hour:${ip}`, ANON_WISHES_PER_HOUR, 3_600_000)) {
+      throw new AppError("RATE_LIMITED", "发太多啦，歇一会儿再许 ✦", 429);
     }
-  },
-);
+    if (!rateLimitAction(`wishes:anon:day:${ip}`, ANON_WISHES_PER_DAY, 86_400_000)) {
+      throw new AppError("RATE_LIMITED", "今天许愿次数用完啦，明天再来～", 429);
+    }
+    return;
+  }
+  const auth = c.get("auth")!;
+  const key = auth.authMethod === "session" ? `wishes:user:${auth.user.id}` : `wishes:agent:${auth.user.id}`;
+  if (!rateLimitAction(key, AUTH_WISHES_PER_DAY, 86_400_000)) {
+    throw new AppError("RATE_LIMITED", "今天许愿次数用完啦，明天再来～", 429);
+  }
+}
+
+wishesRoutes.post("/", optionalAuth, async (c) => {
+  try {
+    const auth = c.get("auth");
+    const body = await c.req.json();
+
+    if (auth?.authMethod === "api_key") {
+      const hasScope = auth.scopes.includes(ApiKeyScope.USER_WRITE);
+      if (!hasScope) {
+        return c.json(errorResponse("FORBIDDEN", "Insufficient API key scopes"), 403);
+      }
+    }
+
+    enforceWishCreateRateLimit(c, Boolean(auth));
+
+    const authorId = auth?.user.id ?? (await getGuestAuthorId());
+    const wish = await createWish(authorId, body);
+    return c.json(wish, 201);
+  } catch (err) {
+    return handleAppError(c, err);
+  }
+});
 
 wishesRoutes.get("/", optionalAuth, async (c) => {
   try {

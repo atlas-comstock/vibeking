@@ -1,17 +1,32 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Nav } from "@/components/Nav";
 import { SiteFooter } from "@/components/SiteFooter";
 
 export const dynamic = "force-dynamic";
-import { api } from "@/lib/api";
+import { api, ApiClientError, buildCookieHeader } from "@/lib/api";
 import { labels, t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
-import { requireUser } from "@/lib/session";
+import { getSession } from "@/lib/session";
+
+function resolveClientIp(headerStore: Awaited<ReturnType<typeof headers>>) {
+  return (
+    headerStore.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    headerStore.get("x-real-ip") ??
+    undefined
+  );
+}
 
 async function createWishAction(formData: FormData) {
   "use server";
 
-  const session = await requireUser();
+  const headerStore = await headers();
+  const clientIp = resolveClientIp(headerStore);
+  const session = await getSession();
+  const cookieHeader = session.user
+    ? buildCookieHeader(session.sessionId, session.csrfToken)
+    : undefined;
+
   const tags = String(formData.get("tags") ?? "")
     .split(",")
     .map((s) => s.trim())
@@ -19,25 +34,35 @@ async function createWishAction(formData: FormData) {
   const budgetRaw = String(formData.get("budgetCents") ?? "").trim();
   const budgetCents = budgetRaw ? Number(budgetRaw) * 100 : null;
 
-  const wish = await api.createWish(
-    {
-      title: String(formData.get("title") ?? ""),
-      description: String(formData.get("description") ?? ""),
-      tags,
-      budgetCents,
-      budgetCurrency: String(formData.get("budgetCurrency") ?? "CNY"),
-      deadline: String(formData.get("deadline") ?? "") || null,
-    },
-    session.cookieHeader,
-    session.csrfToken,
-  );
+  try {
+    const wish = await api.createWish(
+      {
+        title: String(formData.get("title") ?? ""),
+        description: String(formData.get("description") ?? ""),
+        tags,
+        budgetCents,
+        budgetCurrency: String(formData.get("budgetCurrency") ?? "CNY"),
+        deadline: String(formData.get("deadline") ?? "") || null,
+      },
+      { cookieHeader, csrfToken: session.csrfToken, clientIp },
+    );
 
-  redirect(`/wishes/${wish.id}`);
+    redirect(`/wishes/${wish.id}`);
+  } catch (err) {
+    if (err instanceof ApiClientError) {
+      redirect(`/wishes/new?error=${encodeURIComponent(err.message)}`);
+    }
+    throw err;
+  }
 }
 
-export default async function NewWishPage() {
-  await requireUser("/wishes/new");
+type Props = {
+  searchParams: Promise<{ error?: string }>;
+};
+
+export default async function NewWishPage({ searchParams }: Props) {
   const locale = await getLocale();
+  const params = await searchParams;
 
   return (
     <>
@@ -46,7 +71,9 @@ export default async function NewWishPage() {
         <section className="page-hero">
           <h1>{t(labels.wish.create, locale)}</h1>
           <p className="hero-sub">{t(labels.wish.createHint, locale)}</p>
+          <p className="meta-muted">{t(labels.wish.rateLimitHint, locale)}</p>
         </section>
+        {params.error && <p className="error-banner">{params.error}</p>}
         <form action={createWishAction} className="card form-stack">
           <label>
             {t(labels.wish.title, locale)}

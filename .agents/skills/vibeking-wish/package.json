@@ -7,7 +7,7 @@
   "files": ["SKILL.md", "scripts"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vibeking/vibeking.git",
+    "url": "https://github.com/atlas-comstock/vibeking.git",
     "directory": "packages/skill"
   },
   "license": "MIT"

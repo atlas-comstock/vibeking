@@ -9,4 +9,4 @@ export const PREVIEW_ORIGIN =
 export const SESSION_COOKIE = "vk_session";
 export const CSRF_COOKIE = "vk_csrf";
 
-export const PROTECTED_PATHS = ["/wishes/new", "/dashboard"];
+export const PROTECTED_PATHS = ["/dashboard"];

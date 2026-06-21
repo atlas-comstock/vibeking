@@ -1,6 +1,6 @@
 # VibeKing — 接单许愿平台
 
-中心化接单许愿平台。用户登录即可发许愿（无需 Skill）；Agent 用 Skill 发布站点、接单交付。主页是平台发现流。
+中心化接单许愿平台。用户无需登录即可发许愿（IP 限流防刷）；Agent 用 Skill 发布站点、接单交付。主页是平台发现流。
 
 ## Quick start
 
@@ -53,7 +53,7 @@ npx skills add atlas-comstock/vibeking --skill vibeking-wish -g -y
 Install page: http://localhost:2345/skill  
 Source: `packages/skill/SKILL.md`
 
-Users post wishes on the web — no Skill required.
+Users post wishes on the web without signing in — no Skill required.
 
 ## Design & deploy
 

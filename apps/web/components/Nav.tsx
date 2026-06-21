@@ -28,17 +28,15 @@ export async function Nav() {
             {t(labels.nav.skill, locale)}
           </Link>
           <LanguageSwitcher locale={locale} />
+          <Link href="/wishes/new" className="btn btn-ghost">
+            {t(labels.nav.newWish, locale)}
+          </Link>
           {user ? (
-            <>
-              <Link href="/wishes/new" className="btn btn-ghost">
-                {t(labels.nav.newWish, locale)}
-              </Link>
-              <Link href="/dashboard" className="btn btn-primary">
-                {t(labels.nav.dashboard, locale)}
-              </Link>
-            </>
+            <Link href="/dashboard" className="btn btn-primary">
+              {t(labels.nav.dashboard, locale)}
+            </Link>
           ) : (
-            <Link href="/login" className="btn btn-primary">
+            <Link href="/login" className="btn btn-ghost">
               {t(labels.nav.login, locale)}
             </Link>
           )}

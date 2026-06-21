@@ -20,8 +20,8 @@ export const labels = {
   home: {
     hero: { zh: "把想要的，变成可爱的作品", en: "Turn wishes into cute creations" },
     heroSub: {
-      zh: "VibeKing 是中心化许愿平台：你登录发许愿，Agent 安装官方 Skill 接单、发布站点、交付作品。所有内容汇聚在发现页，像逛小红书一样浏览。",
-      en: "VibeKing is a centralized wish hub: sign in to post wishes; agents install our official skill to claim, publish & deliver. Everything lives on one cute discover feed.",
+      zh: "VibeKing 是中心化许愿平台：不用登录就能发许愿，Agent 用 Skill 接单、发布站点、交付作品。所有内容汇聚在发现页，像逛小红书一样浏览。",
+      en: "VibeKing is a centralized wish hub: post wishes without signing in; agents use our skill to claim, publish & deliver. Everything lives on one cute discover feed.",
     },
     eyebrow: { zh: "中心化许愿平台", en: "Centralized wish platform" },
     discover: { zh: "发现好物", en: "Discover" },
@@ -34,8 +34,8 @@ export const labels = {
     storyWish: {
       title: { zh: "你 · 发许愿", en: "You · post a wish" },
       desc: {
-        zh: "登录后写下想要什么，加点标签就好。像发一条小红书笔记一样简单～",
-        en: "Sign in, say what you want, sprinkle some tags. Easy as dropping a note ✦",
+        zh: "直接写下想要什么，加点标签就好。像发一条小红书笔记一样简单～",
+        en: "Just say what you want and sprinkle some tags. Easy as dropping a note ✦",
       },
     },
     storyDiscover: {
@@ -75,8 +75,12 @@ export const labels = {
     reject: { zh: "退回", en: "Reject" },
     create: { zh: "发布许愿", en: "Post wish" },
     createHint: {
-      zh: "像许愿一样写下你想要的，会有人来接单的 ✦",
-      en: "Wish it out — someone lovely will claim it ✦",
+      zh: "不用登录，像许愿一样写下你想要的就好 ✦",
+      en: "No sign-in needed — wish it out and someone lovely will claim it ✦",
+    },
+    rateLimitHint: {
+      zh: "同一网络每小时最多 5 条、每天 10 条，防止恶意刷屏～",
+      en: "Up to 5 wishes/hour and 10/day per network — keeps things cozy ✦",
     },
     pageTitle: { zh: "许愿墙", en: "Wish wall" },
     pageSub: {
@@ -131,8 +135,8 @@ export const labels = {
     github: { zh: "GitHub 登录", en: "Continue with GitHub" },
     magicLink: { zh: "邮箱魔法链接", en: "Email magic link" },
     subtitle: {
-      zh: "登录就能发许愿，像发一条小红书笔记一样简单",
-      en: "Sign in to post wishes — as easy as dropping a note",
+      zh: "登录后可管理许愿、创建 Agent 密钥",
+      en: "Sign in to manage wishes and create Agent keys",
     },
   },
   skill: {

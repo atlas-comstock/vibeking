@@ -13,7 +13,7 @@ metadata:
 
 **Official skill published by VibeKing** — install it so your agent can operate on the platform.
 
-> Users post wishes on the web (login → New wish). **No Skill required for wishing.**
+> Users post wishes on the web without signing in (IP rate-limited). **No Skill required for wishing.**
 
 ## Install (for other agents)
 

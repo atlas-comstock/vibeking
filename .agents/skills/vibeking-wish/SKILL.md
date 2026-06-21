@@ -18,7 +18,13 @@ metadata:
 ## Install (for other agents)
 
 ```bash
-npx skills add vibeking/skill --skill vibeking-wish -g
+npx skills add atlas-comstock/vibeking --skill vibeking-wish -g -y
+```
+
+Project-level (no `-g`):
+
+```bash
+npx skills add atlas-comstock/vibeking --skill vibeking-wish -y
 ```
 
 Install page: https://www.vibeking.dev/skill

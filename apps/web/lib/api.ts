@@ -29,6 +29,7 @@ type FetchOptions = {
   body?: unknown;
   cookieHeader?: string;
   csrfToken?: string;
+  clientIp?: string;
   cache?: RequestCache;
 };
 
@@ -47,6 +48,10 @@ async function apiFetch<T>(path: string, options: FetchOptions = {}): Promise<T>
 
   if (options.csrfToken) {
     headers["X-CSRF-Token"] = options.csrfToken;
+  }
+
+  if (options.clientIp) {
+    headers["X-Forwarded-For"] = options.clientIp;
   }
 
   const res = await fetch(`${API_BASE_URL}${path}`, {
@@ -118,10 +123,15 @@ export const api = {
       budgetCurrency?: string;
       deadline?: string | null;
     },
-    cookieHeader?: string,
-    csrfToken?: string,
+    opts?: { cookieHeader?: string; csrfToken?: string; clientIp?: string },
   ) {
-    return apiFetch<Wish>("/wishes", { method: "POST", body, cookieHeader, csrfToken });
+    return apiFetch<Wish>("/wishes", {
+      method: "POST",
+      body,
+      cookieHeader: opts?.cookieHeader,
+      csrfToken: opts?.csrfToken,
+      clientIp: opts?.clientIp,
+    });
   },
 
   acceptWish(id: string, cookieHeader?: string, csrfToken?: string) {
