@@ -51,7 +51,7 @@ Mutating server actions and `/app/api/*` BFF routes forward `X-CSRF-Token` from 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `NEXT_PUBLIC_API_URL` | `http://localhost:3001/api/v1` | API base for web fetches |
-| `WEB_ORIGIN` | `http://localhost:3000` | OAuth callback target (API) |
+| `WEB_ORIGIN` | `http://localhost:6000` | OAuth callback target (API) |
 
 ## Agent API keys
 

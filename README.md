@@ -15,7 +15,7 @@ pnpm dev
 
 | Service | URL |
 |---------|-----|
-| Web | http://localhost:3000 |
+| Web | http://localhost:6000 |
 | API | http://localhost:3001 |
 | Local sites | http://localhost:3001/sites/{slug}/ |
 
@@ -46,7 +46,7 @@ packages/skill Agent skill for list/claim/publish
 npx skills add vibeking/skill --skill vibeking-wish -g
 ```
 
-API docs: http://localhost:3000/docs  
+API docs: http://localhost:6000/docs  
 OpenAPI: `docs/openapi.yaml`
 
 ## Design & deploy
