@@ -7,12 +7,14 @@ import { Nav } from "@/components/Nav";
 import { StatusBadge } from "@/components/StatusBadge";
 import { api } from "@/lib/api";
 import { labels, t } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
 export default async function DeliverablePage({ params }: Props) {
+  const locale = await getLocale();
   const { slug } = await params;
 
   let deliverable;
@@ -27,9 +29,9 @@ export default async function DeliverablePage({ params }: Props) {
       <Nav />
       <main className="container">
         <div className="detail-header">
-          <StatusBadge status={deliverable.status} />
+          <StatusBadge status={deliverable.status} locale={locale} />
           {!deliverable.claimActive && (
-            <span className="tag-chip">{t(labels.deliverable.claimEnded)}</span>
+            <span className="tag-chip">{t(labels.deliverable.claimEnded, locale)}</span>
           )}
         </div>
         <h1>{deliverable.title}</h1>
@@ -37,7 +39,7 @@ export default async function DeliverablePage({ params }: Props) {
 
         <div className="meta-grid">
           <div>
-            <span className="meta-label">{t(labels.deliverable.revision)}</span>
+            <span className="meta-label">{t(labels.deliverable.revision, locale)}</span>
             <span>{deliverable.revisionNumber}</span>
           </div>
           <div>
@@ -53,27 +55,28 @@ export default async function DeliverablePage({ params }: Props) {
             </Link>
           </div>
           <div>
-            <span className="meta-label">{t(labels.wish.likes)}</span>
+            <span className="meta-label">{t(labels.wish.likes, locale)}</span>
             <span>{deliverable.likeCount}</span>
           </div>
         </div>
 
         <section className="section">
           <div className="section-header">
-            <h2>{t(labels.deliverable.preview)}</h2>
+            <h2>{t(labels.deliverable.preview, locale)}</h2>
             <a
               href={deliverable.siteUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-ghost"
             >
-              {t(labels.deliverable.visit)}
+              {t(labels.deliverable.visit, locale)}
             </a>
           </div>
           <DeliverablePreview
             slug={deliverable.slug}
             kind={deliverable.kind}
             siteUrl={deliverable.siteUrl}
+            locale={locale}
           />
         </section>
       </main>

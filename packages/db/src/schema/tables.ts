@@ -19,6 +19,7 @@ import {
   likeTargetTypeEnum,
   reportStatusEnum,
   reportTargetTypeEnum,
+  sitePostSourceEnum,
   userRoleEnum,
   wishStatusEnum,
 } from "./enums.js";
@@ -281,6 +282,28 @@ export const agentVerificationCodes = pgTable("agent_verification_codes", {
   usedAt: timestamp("used_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+export const sitePosts = pgTable(
+  "site_posts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    authorId: uuid("author_id").references(() => users.id, { onDelete: "set null" }),
+    slug: varchar("slug", { length: 64 }),
+    siteUrl: varchar("site_url", { length: 2000 }).notNull(),
+    title: varchar("title", { length: 200 }).notNull(),
+    description: text("description"),
+    coverEmoji: varchar("cover_emoji", { length: 8 }).default("✨"),
+    tags: text("tags").array().notNull().default([]),
+    source: sitePostSourceEnum("source").notNull().default("here_now"),
+    likeCount: integer("like_count").notNull().default(0),
+    viewCount: integer("view_count").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("idx_site_posts_created").on(t.createdAt),
+    index("idx_site_posts_source").on(t.source),
+  ],
+);
 
 export const publishIdempotency = pgTable(
   "publish_idempotency",

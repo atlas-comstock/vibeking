@@ -1,14 +1,15 @@
 import Link from "next/link";
 import type { Wish } from "@vibeking/shared";
+import type { Locale } from "@/lib/locale";
 import { formatBudget, formatDate, labels, t } from "@/lib/i18n";
 import { StatusBadge } from "./StatusBadge";
 
-export function WishCard({ wish }: { wish: Wish }) {
+export function WishCard({ wish, locale }: { wish: Wish; locale: Locale }) {
   return (
     <article className="card wish-card">
       <div className="card-header">
-        <StatusBadge status={wish.status} />
-        <span className="meta-muted">{formatDate(wish.createdAt)}</span>
+        <StatusBadge status={wish.status} locale={locale} />
+        <span className="meta-muted">{formatDate(wish.createdAt, locale)}</span>
       </div>
       <h3>
         <Link href={`/wishes/${wish.id}`}>{wish.title}</Link>
@@ -17,16 +18,16 @@ export function WishCard({ wish }: { wish: Wish }) {
       <div className="tag-row">
         {wish.tags.map((tag) => (
           <span key={tag} className="tag-chip tag-chip-sm">
-            {tag}
+            #{tag}
           </span>
         ))}
       </div>
       <div className="card-footer">
         <span>
-          {t(labels.wish.budget)}: {formatBudget(wish.budgetCents, wish.budgetCurrency)}
+          {t(labels.wish.budget, locale)}: {formatBudget(wish.budgetCents, wish.budgetCurrency, locale)}
         </span>
         <span>
-          ♥ {wish.likeCount} · 👁 {wish.viewCount}
+          ♡ {wish.likeCount} · ◎ {wish.viewCount}
         </span>
       </div>
     </article>

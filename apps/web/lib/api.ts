@@ -146,6 +146,28 @@ export const api = {
     });
   },
 
+  getFeed(limit = 24, locale: "zh" | "en" = "zh") {
+    return apiFetch<{
+      items: Array<{
+        type: "site_post" | "deliverable" | "wish";
+        id: string;
+        title: string;
+        description?: string;
+        siteUrl?: string;
+        slug?: string;
+        coverEmoji?: string;
+        tags: string[];
+        source?: string;
+        likeCount: number;
+        viewCount: number;
+        createdAt: string;
+        href: string;
+        score?: number;
+      }>;
+      placeholder?: boolean;
+    }>(`/feed?limit=${limit}&locale=${locale}`, { cache: "no-store" });
+  },
+
   getTrendingWishes(limit = 6) {
     return apiFetch<TrendingResponse<Wish>>(`/discovery/trending?type=wishes&limit=${limit}`, {
       cache: "force-cache",

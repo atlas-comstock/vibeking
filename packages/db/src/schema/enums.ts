@@ -36,6 +36,13 @@ export const finalizeStatusEnum = pgEnum("finalize_status", [
 export const likeTargetTypeEnum = pgEnum("like_target_type", [
   "wish",
   "deliverable",
+  "site_post",
+]);
+
+export const sitePostSourceEnum = pgEnum("site_post_source", [
+  "here_now",
+  "hosted",
+  "url",
 ]);
 
 export const reportTargetTypeEnum = pgEnum("report_target_type", [

@@ -9,6 +9,8 @@ import { discoveryRouter } from "./discovery/index.js";
 import { reportsRouter } from "./reports.js";
 import { agentsRoutes } from "./agents/index.js";
 import { sitesDataRoutes } from "./sites/data.js";
+import { feedRouter } from "./feed.js";
+import { hereNowRouter } from "./here-now/index.js";
 import type { AppEnv } from "../middleware/auth.js";
 
 export const v1Routes = new Hono<AppEnv>();
@@ -30,3 +32,5 @@ v1Routes.route("/discovery", discoveryRouter);
 v1Routes.route("/reports", reportsRouter);
 v1Routes.route("/agents", agentsRoutes);
 v1Routes.route("/sites", sitesDataRoutes);
+v1Routes.route("/feed", feedRouter);
+v1Routes.route("/here-now", hereNowRouter);

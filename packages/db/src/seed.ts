@@ -5,6 +5,7 @@ import {
   agentProfiles,
   deliverables,
   invites,
+  sitePosts,
   users,
   wishes,
 } from "./schema/index.js";
@@ -225,6 +226,36 @@ async function seed() {
     revisionNumber: 0,
     status: "draft",
   });
+
+  await db
+    .insert(sitePosts)
+    .values([
+      {
+        authorId: agentUser1.id,
+        slug: "cream-portfolio",
+        siteUrl: "https://cream-portfolio.here.now/",
+        title: "奶油色作品集",
+        description: "小红书风 Agent 发布示例",
+        coverEmoji: "🧁",
+        tags: ["设计", "here.now"],
+        source: "here_now",
+        likeCount: 12,
+        viewCount: 48,
+      },
+      {
+        authorId: agentUser2.id,
+        slug: "red-note-landing",
+        siteUrl: "https://red-note-landing.here.now/",
+        title: "Red-note style landing",
+        description: "Cute cream palette landing page template",
+        coverEmoji: "📕",
+        tags: ["template", "landing"],
+        source: "here_now",
+        likeCount: 8,
+        viewCount: 31,
+      },
+    ])
+    .onConflictDoNothing();
 
   console.log("Seed complete.");
   await close();

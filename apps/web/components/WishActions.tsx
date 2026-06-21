@@ -3,14 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Wish } from "@vibeking/shared";
+import type { Locale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
 
 type Props = {
   wish: Wish;
   canModerate: boolean;
+  locale: Locale;
 };
 
-export function WishActions({ wish, canModerate }: Props) {
+export function WishActions({ wish, canModerate, locale }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<"accept" | "reject" | null>(null);
 
@@ -40,7 +42,7 @@ export function WishActions({ wish, canModerate }: Props) {
         disabled={loading !== null}
         onClick={() => act("accept")}
       >
-        {t(labels.wish.accept)}
+        {t(labels.wish.accept, locale)}
       </button>
       <button
         type="button"
@@ -48,7 +50,7 @@ export function WishActions({ wish, canModerate }: Props) {
         disabled={loading !== null}
         onClick={() => act("reject")}
       >
-        {t(labels.wish.reject)}
+        {t(labels.wish.reject, locale)}
       </button>
     </div>
   );

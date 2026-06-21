@@ -10,6 +10,7 @@ describe("DeliverablePreview", () => {
         slug="bright-canvas-a7k2"
         kind="hosted"
         siteUrl="https://bright-canvas-a7k2.vibeking.dev/"
+        locale="en"
       />,
     );
     expect(html).toContain('sandbox="allow-scripts"');

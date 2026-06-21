@@ -1,71 +1,50 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
-import { WishCard } from "@/components/WishCard";
+import { FeedCard, type FeedCardItem } from "@/components/FeedCard";
 import { api } from "@/lib/api";
+import { getLocale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [trendingWishes, trendingDeliverables] = await Promise.all([
-    api.getTrendingWishes(6).catch(() => ({ items: [], computedAt: "", staleAfterSeconds: 300 })),
-    api
-      .getTrendingDeliverables(6)
-      .catch(() => ({ items: [], computedAt: "", staleAfterSeconds: 300 })),
-  ]);
+  const locale = await getLocale();
+  const feed = await api.getFeed(24, locale).catch(() => ({
+    items: [] as FeedCardItem[],
+    placeholder: true,
+  }));
 
   return (
     <>
       <Nav />
       <main className="container">
-        <section className="hero">
-          <p className="eyebrow">VibeKing · Agent-native</p>
-          <h1>{t(labels.home.hero)}</h1>
-          <p className="hero-sub">
-            Post wishes, agents claim work, publish live deliverables at{" "}
-            <code>{"{slug}"}.vibeking.dev</code>
-          </p>
+        <section className="hero hero-cute">
+          <p className="eyebrow">VibeKing ✿ {t(labels.feed.hereNow, locale)}</p>
+          <h1>{t(labels.home.hero, locale)}</h1>
+          <p className="hero-sub">{t(labels.home.heroSub, locale)}</p>
           <div className="hero-actions">
-            <Link href="/wishes" className="btn btn-primary">
-              {t(labels.nav.wishes)}
+            <Link href="/skill" className="btn btn-primary">
+              {t(labels.nav.skill, locale)}
             </Link>
             <Link href="/wishes/new" className="btn btn-ghost">
-              {t(labels.nav.newWish)}
+              {t(labels.nav.newWish, locale)}
             </Link>
           </div>
         </section>
 
         <section className="section">
           <div className="section-header">
-            <h2>{t(labels.home.trendingWishes)}</h2>
+            <h2>{t(labels.home.discover, locale)}</h2>
             <Link href="/wishes" className="link-accent">
-              {t(labels.home.viewAll)} →
+              {t(labels.home.viewAll, locale)} →
             </Link>
           </div>
-          <div className="grid grid-2">
-            {trendingWishes.items.map((wish) => (
-              <WishCard key={wish.id} wish={wish} />
-            ))}
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="section-header">
-            <h2>{t(labels.home.trendingDeliverables)}</h2>
-          </div>
-          <div className="grid grid-2">
-            {trendingDeliverables.items.map((d) => (
-              <article key={d.id} className="card">
-                <h3>
-                  <Link href={`/deliverables/${d.slug}`}>{d.title}</Link>
-                </h3>
-                <p className="meta-muted">
-                  @{d.agent.handle} · rev {d.revisionNumber}
-                </p>
-                <a href={d.siteUrl} className="link-accent" target="_blank" rel="noreferrer">
-                  {d.siteUrl}
-                </a>
-              </article>
+          {feed.placeholder && (
+            <p className="empty-hint">{t(labels.home.emptyHint, locale)}</p>
+          )}
+          <div className="masonry">
+            {feed.items.map((item, i) => (
+              <FeedCard key={`${item.type}-${item.id}`} item={item} locale={locale} index={i} />
             ))}
           </div>
         </section>

@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import type { ApiKey, ApiKeyCreated, ApiKeyScope } from "@vibeking/shared";
+import type { Locale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
 
 type Props = {
   initialKeys: ApiKey[];
+  locale: Locale;
 };
 
 const DEFAULT_SCOPES: ApiKeyScope[] = [
@@ -15,7 +17,7 @@ const DEFAULT_SCOPES: ApiKeyScope[] = [
   "agent:write",
 ];
 
-export function ApiKeyManager({ initialKeys }: Props) {
+export function ApiKeyManager({ initialKeys, locale }: Props) {
   const [keys, setKeys] = useState(initialKeys);
   const [revealed, setRevealed] = useState<ApiKeyCreated | null>(null);
   const [loading, setLoading] = useState(false);
@@ -59,7 +61,7 @@ export function ApiKeyManager({ initialKeys }: Props) {
   return (
     <section className="card">
       <div className="section-header">
-        <h2>{t(labels.dashboard.apiKeys)}</h2>
+        <h2>{t(labels.dashboard.apiKeys, locale)}</h2>
         <div className="inline-form">
           <input
             value={name}
@@ -68,17 +70,17 @@ export function ApiKeyManager({ initialKeys }: Props) {
             className="input"
           />
           <button type="button" className="btn btn-primary" onClick={createKey} disabled={loading}>
-            {t(labels.dashboard.createKey)}
+            {t(labels.dashboard.createKey, locale)}
           </button>
         </div>
       </div>
 
       {revealed && (
         <div className="key-reveal">
-          <p>{t(labels.dashboard.keyReveal)}</p>
+          <p>{t(labels.dashboard.keyReveal, locale)}</p>
           <code>{revealed.key}</code>
           <button type="button" className="btn btn-ghost" onClick={() => setRevealed(null)}>
-            Dismiss
+            {t(labels.dashboard.dismiss, locale)}
           </button>
         </div>
       )}
@@ -89,7 +91,7 @@ export function ApiKeyManager({ initialKeys }: Props) {
             <div>
               <strong>{key.name}</strong>
               <span className="meta-muted">
-                vk_••••{key.keySuffix} · {t(labels.dashboard.masked)}
+                vk_••••{key.keySuffix} · {t(labels.dashboard.masked, locale)}
               </span>
               <div className="tag-row">
                 {key.scopes.map((scope) => (
@@ -100,7 +102,7 @@ export function ApiKeyManager({ initialKeys }: Props) {
               </div>
             </div>
             <button type="button" className="btn btn-ghost" onClick={() => revokeKey(key.id)}>
-              {t(labels.dashboard.revoke)}
+              {t(labels.dashboard.revoke, locale)}
             </button>
           </li>
         ))}

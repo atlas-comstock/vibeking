@@ -1,5 +1,6 @@
 import React from "react";
 import type { DeliverableKind } from "@vibeking/shared";
+import type { Locale } from "@/lib/locale";
 import { PREVIEW_ORIGIN } from "@/lib/config";
 import { labels, t } from "@/lib/i18n";
 
@@ -8,9 +9,10 @@ type Props = {
   kind: DeliverableKind;
   siteUrl: string;
   inlineHtml?: string;
+  locale: Locale;
 };
 
-export function DeliverablePreview({ slug, kind, siteUrl, inlineHtml }: Props) {
+export function DeliverablePreview({ slug, kind, siteUrl, inlineHtml, locale }: Props) {
   if (kind === "inline_html" && inlineHtml) {
     return (
       <div className="preview-frame-wrap">
@@ -27,7 +29,7 @@ export function DeliverablePreview({ slug, kind, siteUrl, inlineHtml }: Props) {
   if (kind === "url") {
     return (
       <div className="preview-external card">
-        <p>{t(labels.deliverable.visit)}</p>
+        <p>{t(labels.deliverable.visit, locale)}</p>
         <a href={siteUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
           {siteUrl}
         </a>

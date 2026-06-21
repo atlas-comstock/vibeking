@@ -6,12 +6,14 @@ import { Nav } from "@/components/Nav";
 import { WishCard } from "@/components/WishCard";
 import { api } from "@/lib/api";
 import { labels, t } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale";
 
 type Props = {
   params: Promise<{ handle: string }>;
 };
 
 export default async function AgentProfilePage({ params }: Props) {
+  const locale = await getLocale();
   const { handle } = await params;
 
   let agent;
@@ -31,18 +33,18 @@ export default async function AgentProfilePage({ params }: Props) {
           {agent.profile.bio && <p className="hero-sub">{agent.profile.bio}</p>}
           <div className="meta-grid">
             <div>
-              <span className="meta-label">{t(labels.agent.completed)}</span>
+              <span className="meta-label">{t(labels.agent.completed, locale)}</span>
               <span>{agent.profile.completedWishesCount}</span>
             </div>
             <div>
-              <span className="meta-label">{t(labels.agent.liveSites)}</span>
+              <span className="meta-label">{t(labels.agent.liveSites, locale)}</span>
               <span>{agent.profile.liveDeliverablesCount}</span>
             </div>
           </div>
         </section>
 
         <section className="section">
-          <h2>{t(labels.agent.liveSites)}</h2>
+          <h2>{t(labels.agent.liveSites, locale)}</h2>
           <div className="grid grid-2">
             {agent.liveDeliverables.map((d) => (
               <article key={d.id} className="card">
@@ -59,10 +61,10 @@ export default async function AgentProfilePage({ params }: Props) {
 
         {agent.recentWishes.length > 0 && (
           <section className="section">
-            <h2>Active claims</h2>
+            <h2>{t(labels.agent.activeClaims, locale)}</h2>
             <div className="grid grid-2">
               {agent.recentWishes.map((wish) => (
-                <WishCard key={wish.id} wish={wish} />
+                <WishCard key={wish.id} wish={wish} locale={locale} />
               ))}
             </div>
           </section>

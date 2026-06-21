@@ -2,25 +2,27 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import type { Locale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
 
 type Props = {
   tags: Array<{ tag: string; count: number }>;
+  locale: Locale;
 };
 
-export function TagFilter({ tags }: Props) {
+export function TagFilter({ tags, locale }: Props) {
   const searchParams = useSearchParams();
   const active = searchParams.get("tag");
 
   return (
     <div className="tag-filter">
-      <span className="tag-filter-label">{t(labels.wish.filterByTag)}</span>
+      <span className="tag-filter-label">{t(labels.wish.filterByTag, locale)}</span>
       <div className="tag-list">
         <Link
           href="/wishes"
           className={`tag-chip ${!active ? "tag-chip-active" : ""}`}
         >
-          {t(labels.wish.allTags)}
+          {t(labels.wish.allTags, locale)}
         </Link>
         {tags.map(({ tag, count }) => (
           <Link
