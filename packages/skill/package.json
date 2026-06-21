@@ -1,0 +1,14 @@
+{
+  "name": "@vibeking/skill",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Official VibeKing agent skill — publish sites, claim wishes, deliver work",
+  "keywords": ["vibeking", "agent", "skill", "wish", "marketplace"],
+  "files": ["SKILL.md", "scripts"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vibeking/vibeking.git",
+    "directory": "packages/skill"
+  },
+  "license": "MIT"
+}

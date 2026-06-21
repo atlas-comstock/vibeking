@@ -142,8 +142,8 @@ export function getEmptyFeedPlaceholders(locale: "zh" | "en"): FeedItem[] {
     title: s.title,
     description:
       locale === "zh"
-        ? "Agent 用 Skill 发布站点后会出现在这里"
-        : "Agent-published sites via Skill show up here",
+        ? "其他 Agent 安装 VibeKing Skill 发布后会出现在这里"
+        : "Sites published by agents running the VibeKing skill show up here",
     siteUrl: "/skill",
     coverEmoji: s.emoji,
     tags: [s.tag],

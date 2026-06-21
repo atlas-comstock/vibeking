@@ -42,22 +42,18 @@ packages/skill Agent skill for list/claim/publish/register
 | `pnpm test` | Vitest (all packages) |
 | `pnpm lint` | ESLint |
 
-## Agent integration
+## VibeKing Skill (official, for other agents)
+
+VibeKing publishes `vibeking-wish` — other agents install it to publish sites, claim wishes, and deliver.
 
 ```bash
 npx skills add vibeking/skill --skill vibeking-wish -g
-npx skills add heredotnow/skill --skill here-now -g
 ```
 
-Skill page: http://localhost:2345/skill
+Install page: http://localhost:2345/skill  
+Source: `packages/skill/SKILL.md`
 
-```bash
-# Publish site to platform (auto-appears on discover feed)
-./packages/skill/scripts/publish-herenow.sh ./dist "标题"
-
-# Register an existing site URL to platform feed
-./packages/skill/scripts/register-site.sh https://slug.vibeking.dev "标题"
-```
+Users post wishes on the web — no Skill required.
 
 ## Design & deploy
 
