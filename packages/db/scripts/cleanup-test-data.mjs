@@ -41,7 +41,10 @@ await client.query("BEGIN");
 
 await client.query("delete from likes");
 await client.query("delete from view_events");
-await client.query("delete from site_posts where site_url <> $1", [KEEP_SITE_URL]);
+await client.query(
+  `delete from site_posts
+   where site_url in (select external_url from deliverables where external_url is not null)`,
+);
 await client.query("delete from wishes where id <> $1", [KEEP_WISH_ID]);
 await client.query(
   `delete from agent_profiles

@@ -4,6 +4,18 @@ import { deliverables, getDb, sitePosts, wishes } from "@vibeking/db";
 
 export type FeedItemType = "site_post" | "deliverable" | "wish";
 
+export function normalizeFeedSiteUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    parsed.hash = "";
+    parsed.search = "";
+    const path = parsed.pathname.replace(/\/+$/, "") || "";
+    return `${parsed.protocol}//${parsed.host}${path}`.toLowerCase();
+  } catch {
+    return url.trim().toLowerCase().replace(/\/+$/, "");
+  }
+}
+
 export type FeedItem = {
   type: FeedItemType;
   id: string;
@@ -30,6 +42,7 @@ export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }
     db
       .select({
         id: deliverables.id,
+        wishId: deliverables.wishId,
         slug: deliverables.slug,
         kind: deliverables.kind,
         title: deliverables.title,
@@ -75,8 +88,43 @@ export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }
   }
 
   const items: FeedItem[] = [];
+  const deliverableSiteUrls = new Set<string>();
+  const deliverableWishIds = new Set<string>();
+
+  for (const d of dels) {
+    const score = computeTrendingScore({
+      likeCount: d.likeCount,
+      viewCount: d.viewCount,
+      createdAt: d.createdAt,
+    });
+    const siteUrl =
+      d.kind === "url" && d.externalUrl
+        ? d.externalUrl
+        : `https://${d.slug}.vibeking.dev/`;
+    deliverableSiteUrls.add(normalizeFeedSiteUrl(siteUrl));
+    deliverableWishIds.add(d.wishId);
+    items.push({
+      type: "deliverable",
+      id: d.id,
+      title: d.title || d.slug,
+      description: d.description ?? undefined,
+      siteUrl,
+      slug: d.slug,
+      coverEmoji: "🎀",
+      tags: [],
+      source: d.kind,
+      likeCount: d.likeCount,
+      viewCount: d.viewCount,
+      createdAt: d.createdAt.toISOString(),
+      href: `/deliverables/${d.slug}`,
+      score,
+    });
+  }
 
   for (const p of posts) {
+    if (deliverableSiteUrls.has(normalizeFeedSiteUrl(p.siteUrl))) {
+      continue;
+    }
     const score = computeTrendingScore({
       likeCount: p.likeCount,
       viewCount: p.viewCount,
@@ -100,35 +148,10 @@ export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }
     });
   }
 
-  for (const d of dels) {
-    const score = computeTrendingScore({
-      likeCount: d.likeCount,
-      viewCount: d.viewCount,
-      createdAt: d.createdAt,
-    });
-    const siteUrl =
-      d.kind === "url" && d.externalUrl
-        ? d.externalUrl
-        : `https://${d.slug}.vibeking.dev/`;
-    items.push({
-      type: "deliverable",
-      id: d.id,
-      title: d.title || d.slug,
-      description: d.description ?? undefined,
-      siteUrl,
-      slug: d.slug,
-      coverEmoji: "🎀",
-      tags: [],
-      source: d.kind,
-      likeCount: d.likeCount,
-      viewCount: d.viewCount,
-      createdAt: d.createdAt.toISOString(),
-      href: `/deliverables/${d.slug}`,
-      score,
-    });
-  }
-
   for (const w of wishRows) {
+    if (deliverableWishIds.has(w.id)) {
+      continue;
+    }
     const score = computeTrendingScore({
       likeCount: w.likeCount,
       viewCount: w.viewCount,
