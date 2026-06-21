@@ -1,0 +1,24 @@
+# fly launch --config infra/fly/web.toml
+app = "vibeking-web-staging"
+primary_region = "sin"
+
+[build]
+  dockerfile = "../../apps/web/Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+  NEXT_PUBLIC_API_URL = "https://api.staging.vibeking.dev/api/v1"
+  NEXT_PUBLIC_WEB_ORIGIN = "https://staging.vibeking.dev"
+  NEXT_PUBLIC_PREVIEW_ORIGIN = "https://preview.staging.vibeking.dev"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

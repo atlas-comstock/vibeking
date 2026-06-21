@@ -1,0 +1,18 @@
+# Staging worker — symlink or copy to apps/worker/wrangler.toml for deploy
+name = "vibeking-worker-staging"
+main = "../../apps/worker/src/index.ts"
+compatibility_date = "2024-11-01"
+
+[vars]
+SITE_BASE_DOMAIN = "staging.vibeking.dev"
+
+[[kv_namespaces]]
+binding = "SLUG_META"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "vibeking-staging"
+
+[env.production]
+vars = { SITE_BASE_DOMAIN = "vibeking.dev" }

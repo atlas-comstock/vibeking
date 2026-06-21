@@ -1,3 +1,4 @@
+import React from "react";
 import type { DeliverableKind } from "@vibeking/shared";
 import { PREVIEW_ORIGIN } from "@/lib/config";
 import { labels, t } from "@/lib/i18n";

@@ -4,6 +4,9 @@ import { createRequestId } from "./lib/request-id.js";
 import { globalRateLimit } from "./middleware/rate-limit.js";
 import { optionalAuth, handleAppError, type AppEnv } from "./middleware/auth.js";
 import { v1Routes } from "./routes/v1.js";
+import { sitesProxyRoutes } from "./routes/sites/proxy.js";
+import { metricsRoutes } from "./routes/metrics.js";
+import { requestLogging } from "./middleware/logging.js";
 
 export const app = new Hono<AppEnv>();
 
@@ -13,8 +16,12 @@ app.use("*", async (c, next) => {
 });
 
 app.use("*", globalRateLimit);
+app.use("*", requestLogging);
 
 app.onError((err, c) => handleAppError(c, err));
+
+app.route("/metrics", metricsRoutes);
+app.route("/sites", sitesProxyRoutes);
 
 app.get("/health", (c) =>
   c.json({

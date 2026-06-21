@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { WORKER_STUB } from "./index.js";
+import worker from "./index.js";
 
-describe("worker stub", () => {
-  it("exports stub flag", () => {
-    expect(WORKER_STUB).toBe(true);
+describe("worker export", () => {
+  it("exports fetch handler", () => {
+    expect(worker.fetch).toBeTypeOf("function");
   });
 });

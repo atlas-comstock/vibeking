@@ -4,13 +4,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "dev": "wrangler dev",
+    "build": "tsc --noEmit",
+    "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run"
   },
+  "dependencies": {
+    "@vibeking/publish": "workspace:*"
+  },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250320.0",
+    "wrangler": "^4.14.0",
     "typescript": "^5.8.2",
     "tsx": "^4.19.3",
     "vitest": "^3.0.7"

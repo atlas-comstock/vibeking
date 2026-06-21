@@ -1,0 +1,20 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy API
+        run: flyctl deploy --config infra/fly/api.toml --app vibeking-api --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Deploy Web
+        run: flyctl deploy --config infra/fly/web.toml --app vibeking-web --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
