@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
-import { FeedCard, type FeedCardItem } from "@/components/FeedCard";
+import { FeedCard } from "@/components/FeedCard";
 import { api } from "@/lib/api";
+import { getFeedPlaceholders } from "@/lib/feed-placeholders";
 import { getLocale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
 
@@ -10,9 +11,12 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const locale = await getLocale();
   const feed = await api.getFeed(24, locale).catch(() => ({
-    items: [] as FeedCardItem[],
+    items: getFeedPlaceholders(locale),
     placeholder: true,
   }));
+
+  const items =
+    feed.items.length > 0 ? feed.items : feed.placeholder ? getFeedPlaceholders(locale) : [];
 
   return (
     <>
@@ -43,7 +47,7 @@ export default async function HomePage() {
             <p className="empty-hint">{t(labels.home.emptyHint, locale)}</p>
           )}
           <div className="masonry">
-            {feed.items.map((item, i) => (
+            {items.map((item, i) => (
               <FeedCard key={`${item.type}-${item.id}`} item={item} locale={locale} index={i} />
             ))}
           </div>

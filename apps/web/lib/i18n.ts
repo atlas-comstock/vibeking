@@ -115,8 +115,9 @@ export const labels = {
   },
 } as const satisfies Record<string, unknown>;
 
-export function t(label: LocaleLabel, locale: Locale): string {
-  return label[locale];
+export function t(label: LocaleLabel | undefined, locale: Locale): string {
+  if (!label) return "";
+  return label[locale] ?? label.zh ?? label.en ?? "";
 }
 
 export function formatBudget(cents: number | null, currency: string, locale: Locale): string {
