@@ -23,12 +23,11 @@ const TYPE_LABEL = {
   wish: labels.feed.wish,
 } as const;
 
-const COVER_GRADIENTS = [
-  "linear-gradient(145deg, #FFE8D6 0%, #FFD4BA 100%)",
-  "linear-gradient(145deg, #FFF0E8 0%, #FFCAB8 100%)",
-  "linear-gradient(145deg, #FFF5E6 0%, #FFD9C8 100%)",
-  "linear-gradient(145deg, #FFEFE3 0%, #FFB8A8 100%)",
-];
+const TYPE_EMOJI = {
+  site_post: "🌐",
+  deliverable: "🎀",
+  wish: "💫",
+} as const;
 
 function CardLink({
   href,
@@ -64,10 +63,15 @@ export function FeedCard({
   locale: Locale;
   index?: number;
 }) {
+  const emoji = item.coverEmoji ?? TYPE_EMOJI[item.type];
+
   return (
-    <article className="pin-card">
-      <CardLink href={item.href} className="pin-cover" style={{ background: COVER_GRADIENTS[index % 4] }}>
-        <span className="pin-emoji">{item.coverEmoji ?? "✨"}</span>
+    <article className="pin-card" style={{ animationDelay: `${(index % 8) * 40}ms` }}>
+      <CardLink
+        href={item.href}
+        className={`pin-cover pin-cover-type-${item.type}`}
+      >
+        <span className="pin-emoji">{emoji}</span>
       </CardLink>
       <div className="pin-body">
         <p className="pin-type">{t(TYPE_LABEL[item.type], locale)}</p>

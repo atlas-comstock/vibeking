@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { Nav } from "@/components/Nav";
-
-export const dynamic = "force-dynamic";
+import { SiteFooter } from "@/components/SiteFooter";
 import { TagFilter } from "@/components/TagFilter";
 import { WishCard } from "@/components/WishCard";
+
+export const dynamic = "force-dynamic";
 import { api } from "@/lib/api";
 import { labels, t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
@@ -26,14 +28,25 @@ export default async function WishesPage({ searchParams }: Props) {
     <>
       <Nav />
       <main className="container">
-        <div className="section-header">
-          <h1>{t(labels.nav.wishes, locale)}</h1>
-        </div>
+        <section className="page-hero">
+          <h1>{t(labels.wish.pageTitle, locale)}</h1>
+          <p className="hero-sub">{t(labels.wish.pageSub, locale)}</p>
+        </section>
+
         <Suspense fallback={<div className="tag-filter" />}>
           <TagFilter tags={tags} locale={locale} />
         </Suspense>
+
         {items.length === 0 ? (
-          <p className="empty-state">{t(labels.wish.noWishes, locale)}</p>
+          <div className="empty-discover card">
+            <span className="empty-discover-emoji">✦</span>
+            <p className="empty-state" style={{ padding: "0 0 1rem" }}>
+              {t(labels.wish.noWishes, locale)}
+            </p>
+            <Link href="/wishes/new" className="btn btn-primary">
+              {t(labels.nav.newWish, locale)}
+            </Link>
+          </div>
         ) : (
           <div className="grid grid-2">
             {items.map((wish) => (
@@ -42,6 +55,7 @@ export default async function WishesPage({ searchParams }: Props) {
           </div>
         )}
       </main>
+      <SiteFooter />
     </>
   );
 }

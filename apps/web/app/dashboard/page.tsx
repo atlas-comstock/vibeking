@@ -3,6 +3,7 @@ import { ApiKeyManager } from "@/components/ApiKeyManager";
 
 export const dynamic = "force-dynamic";
 import { Nav } from "@/components/Nav";
+import { SiteFooter } from "@/components/SiteFooter";
 import { WishCard } from "@/components/WishCard";
 import { api } from "@/lib/api";
 import { labels, t } from "@/lib/i18n";
@@ -51,6 +52,7 @@ export default async function DashboardPage() {
           <ApiKeyManager initialKeys={keys} locale={locale} />
         </section>
       </main>
+      <SiteFooter />
     </>
   );
 }

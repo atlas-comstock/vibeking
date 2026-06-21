@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { Nav } from "@/components/Nav";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const dynamic = "force-dynamic";
 import { api } from "@/lib/api";
@@ -42,8 +43,10 @@ export default async function NewWishPage() {
     <>
       <Nav />
       <main className="container page-narrow">
-        <h1>{t(labels.wish.create, locale)}</h1>
-        <p className="meta-muted">{t(labels.wish.createHint, locale)}</p>
+        <section className="page-hero">
+          <h1>{t(labels.wish.create, locale)}</h1>
+          <p className="hero-sub">{t(labels.wish.createHint, locale)}</p>
+        </section>
         <form action={createWishAction} className="card form-stack">
           <label>
             {t(labels.wish.title, locale)}
@@ -73,6 +76,7 @@ export default async function NewWishPage() {
           </button>
         </form>
       </main>
+      <SiteFooter />
     </>
   );
 }

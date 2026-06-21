@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const dynamic = "force-dynamic";
 import { API_BASE_URL } from "@/lib/config";
@@ -21,6 +22,9 @@ export default async function LoginPage({ searchParams }: Props) {
       <Nav />
       <main className="container page-narrow">
         <section className="card login-card">
+          <span className="empty-discover-emoji" style={{ marginBottom: "0.5rem" }}>
+            ✿
+          </span>
           <h1>{t(labels.login.title, locale)}</h1>
           <p className="meta-muted">{t(labels.login.subtitle, locale)}</p>
           {params.error && <p className="error-banner">Session error — please try again.</p>}
@@ -41,11 +45,12 @@ export default async function LoginPage({ searchParams }: Props) {
               </button>
             </form>
           </div>
-          <p className="meta-muted">
+          <p className="meta-muted" style={{ marginTop: "1rem" }}>
             <Link href="/">← {t(labels.nav.discover, locale)}</Link>
           </p>
         </section>
       </main>
+      <SiteFooter />
     </>
   );
 }

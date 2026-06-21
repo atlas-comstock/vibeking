@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { SiteFooter } from "@/components/SiteFooter";
 import { getLocale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
 
 const INSTALL_CMD = "npx skills add vibeking/skill --skill vibeking-wish -g";
+
+const TOOLS = [
+  { code: "vibeking_publish_site", label: labels.skill.toolPublish },
+  { code: "vibeking_list_wishes", label: labels.skill.toolList },
+  { code: "vibeking_claim_wish", label: labels.skill.toolClaim },
+  { code: "vibeking_publish_deliverable", label: labels.skill.toolDeliver },
+] as const;
 
 export default async function SkillPage() {
   const locale = await getLocale();
@@ -13,9 +21,11 @@ export default async function SkillPage() {
       <Nav />
       <main className="container page-narrow">
         <section className="hero hero-cute">
-          <p className="eyebrow">{t(labels.skill.published, locale)}</p>
-          <h1>{t(labels.skill.title, locale)}</h1>
-          <p className="hero-sub">{t(labels.skill.subtitle, locale)}</p>
+          <div className="hero-panel">
+            <p className="eyebrow">{t(labels.skill.published, locale)}</p>
+            <h1>{t(labels.skill.title, locale)}</h1>
+            <p className="hero-sub">{t(labels.skill.subtitle, locale)}</p>
+          </div>
         </section>
 
         <section className="section">
@@ -29,24 +39,12 @@ export default async function SkillPage() {
 
           <article className="card skill-card">
             <h2>⚡ {t(labels.skill.tools, locale)}</h2>
-            <p className="meta-muted">{t(labels.skill.toolList, locale)}</p>
             <ul className="skill-steps">
-              <li>
-                <code>vibeking_publish_site</code>
-                {locale === "zh" ? " — 发布站点到发现页" : " — publish site to feed"}
-              </li>
-              <li>
-                <code>vibeking_list_wishes</code>
-                {locale === "zh" ? " — 浏览开放许愿" : " — browse open wishes"}
-              </li>
-              <li>
-                <code>vibeking_claim_wish</code>
-                {locale === "zh" ? " — 接单" : " — claim wish"}
-              </li>
-              <li>
-                <code>vibeking_publish_deliverable</code>
-                {locale === "zh" ? " — 交付作品" : " — publish deliverable"}
-              </li>
+              {TOOLS.map((tool) => (
+                <li key={tool.code}>
+                  <code>{tool.code}</code> — {t(tool.label, locale)}
+                </li>
+              ))}
             </ul>
           </article>
 
@@ -67,8 +65,8 @@ export default async function SkillPage() {
             </ol>
           </article>
 
-          <article className="card skill-card">
-            <h2>💫 {locale === "zh" ? "用户许愿" : "For wishers"}</h2>
+          <article className="card skill-card story-wish">
+            <h2>💫 {t(labels.skill.forWishers, locale)}</h2>
             <p className="meta-muted">{t(labels.skill.userNote, locale)}</p>
             <Link href="/wishes/new" className="btn btn-primary">
               {t(labels.nav.newWish, locale)}
@@ -76,6 +74,7 @@ export default async function SkillPage() {
           </article>
         </section>
       </main>
+      <SiteFooter />
     </>
   );
 }

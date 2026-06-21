@@ -1,5 +1,5 @@
 export const PLATFORM_NAME = "VibeKing";
-export const PLATFORM_TAGLINE = "中心化接单许愿平台";
+export const PLATFORM_TAGLINE = "许愿变成可爱作品";
 
 export * from "./enums.js";
 export * from "./errors.js";

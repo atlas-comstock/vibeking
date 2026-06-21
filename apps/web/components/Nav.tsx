@@ -18,9 +18,15 @@ export async function Nav() {
           </span>
         </Link>
         <nav className="nav-links">
-          <Link href="/">{t(labels.nav.discover, locale)}</Link>
-          <Link href="/wishes">{t(labels.nav.wishes, locale)}</Link>
-          <Link href="/skill">{t(labels.nav.skill, locale)}</Link>
+          <Link href="/" className="nav-link">
+            {t(labels.nav.discover, locale)}
+          </Link>
+          <Link href="/wishes" className="nav-link">
+            {t(labels.nav.wishes, locale)}
+          </Link>
+          <Link href="/skill" className="nav-link">
+            {t(labels.nav.skill, locale)}
+          </Link>
           <LanguageSwitcher locale={locale} />
           {user ? (
             <>
