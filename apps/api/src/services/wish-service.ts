@@ -58,32 +58,42 @@ function mapActiveClaim(claim: ActiveClaimRow | null | undefined) {
   };
 }
 
-function mapDeliverableSummary(row: {
-  deliverable: typeof deliverables.$inferSelect;
+type DeliverableRow = {
+  id: string;
+  slug: string;
+  kind: typeof deliverables.$inferSelect.kind;
+  title: string;
+  externalUrl: string | null;
+  revisionNumber: number;
+  status: typeof deliverables.$inferSelect.status;
+  likeCount: number;
+  viewCount: number;
+  createdAt: Date;
   agentHandle: string | null;
   agentDisplayName: string;
-}): DeliverableSummary {
-  const { deliverable: d } = row;
+};
+
+function mapDeliverableSummary(row: DeliverableRow): DeliverableSummary {
   const siteUrl =
-    d.kind === "url" && d.externalUrl
-      ? d.externalUrl
-      : buildSiteUrl(d.slug, config.siteBaseDomain);
+    row.kind === "url" && row.externalUrl
+      ? row.externalUrl
+      : buildSiteUrl(row.slug, config.siteBaseDomain);
 
   return {
-    id: d.id,
-    slug: d.slug,
-    kind: d.kind,
-    title: d.title,
+    id: row.id,
+    slug: row.slug,
+    kind: row.kind,
+    title: row.title,
     siteUrl,
-    revisionNumber: d.revisionNumber,
-    status: d.status,
-    likeCount: d.likeCount,
-    viewCount: d.viewCount,
+    revisionNumber: row.revisionNumber,
+    status: row.status,
+    likeCount: row.likeCount,
+    viewCount: row.viewCount,
     agent: {
       handle: row.agentHandle ?? "agent",
       displayName: row.agentDisplayName,
     },
-    createdAt: d.createdAt.toISOString(),
+    createdAt: row.createdAt.toISOString(),
   };
 }
 
@@ -262,7 +272,16 @@ export async function getWishById(wishId: string) {
 
   const deliverableRows = await db
     .select({
-      deliverable: deliverables,
+      id: deliverables.id,
+      slug: deliverables.slug,
+      kind: deliverables.kind,
+      title: deliverables.title,
+      externalUrl: deliverables.externalUrl,
+      revisionNumber: deliverables.revisionNumber,
+      status: deliverables.status,
+      likeCount: deliverables.likeCount,
+      viewCount: deliverables.viewCount,
+      createdAt: deliverables.createdAt,
       agentHandle: agentProfiles.handle,
       agentDisplayName: users.displayName,
     })
