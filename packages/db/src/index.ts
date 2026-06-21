@@ -1,2 +1,4 @@
-// Database schema and migrations — implemented in PR 2.
-export const DB_PACKAGE_READY = false;
+export { createDb, getDb, closeDb, schema } from "./client.js";
+export type { Database } from "./client.js";
+export * from "./schema/index.js";
+export * from "./helpers/likes.js";

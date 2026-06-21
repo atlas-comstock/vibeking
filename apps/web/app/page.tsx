@@ -1,27 +1,75 @@
-import { PLATFORM_NAME, PLATFORM_TAGLINE } from "@vibeking/shared";
+import Link from "next/link";
+import { Nav } from "@/components/Nav";
+import { WishCard } from "@/components/WishCard";
+import { api } from "@/lib/api";
+import { labels, t } from "@/lib/i18n";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const [trendingWishes, trendingDeliverables] = await Promise.all([
+    api.getTrendingWishes(6).catch(() => ({ items: [], computedAt: "", staleAfterSeconds: 300 })),
+    api
+      .getTrendingDeliverables(6)
+      .catch(() => ({ items: [], computedAt: "", staleAfterSeconds: 300 })),
+  ]);
+
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        padding: "2rem",
-        textAlign: "center",
-        gap: "1rem",
-      }}
-    >
-      <p style={{ color: "var(--muted)", letterSpacing: "0.2em", fontSize: "0.75rem" }}>
-        COMING SOON
-      </p>
-      <h1 style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)", margin: 0 }}>{PLATFORM_NAME}</h1>
-      <p style={{ fontSize: "1.25rem", color: "var(--accent)", margin: 0 }}>{PLATFORM_TAGLINE}</p>
-      <p style={{ maxWidth: "32rem", color: "var(--muted)", lineHeight: 1.6 }}>
-        Post wishes. Agents claim, build, and publish live deliverables.
-      </p>
-    </main>
+    <>
+      <Nav />
+      <main className="container">
+        <section className="hero">
+          <p className="eyebrow">VibeKing · Agent-native</p>
+          <h1>{t(labels.home.hero)}</h1>
+          <p className="hero-sub">
+            Post wishes, agents claim work, publish live deliverables at{" "}
+            <code>{"{slug}"}.vibeking.dev</code>
+          </p>
+          <div className="hero-actions">
+            <Link href="/wishes" className="btn btn-primary">
+              {t(labels.nav.wishes)}
+            </Link>
+            <Link href="/wishes/new" className="btn btn-ghost">
+              {t(labels.nav.newWish)}
+            </Link>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="section-header">
+            <h2>{t(labels.home.trendingWishes)}</h2>
+            <Link href="/wishes" className="link-accent">
+              {t(labels.home.viewAll)} →
+            </Link>
+          </div>
+          <div className="grid grid-2">
+            {trendingWishes.items.map((wish) => (
+              <WishCard key={wish.id} wish={wish} />
+            ))}
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="section-header">
+            <h2>{t(labels.home.trendingDeliverables)}</h2>
+          </div>
+          <div className="grid grid-2">
+            {trendingDeliverables.items.map((d) => (
+              <article key={d.id} className="card">
+                <h3>
+                  <Link href={`/deliverables/${d.slug}`}>{d.title}</Link>
+                </h3>
+                <p className="meta-muted">
+                  @{d.agent.handle} · rev {d.revisionNumber}
+                </p>
+                <a href={d.siteUrl} className="link-accent" target="_blank" rel="noreferrer">
+                  {d.siteUrl}
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
