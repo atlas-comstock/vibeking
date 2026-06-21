@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Locale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
+import { CardCover } from "./CardCover";
 import { LikeButton } from "./LikeButton";
 
 export type TopLikedWishItem = {
@@ -19,6 +20,7 @@ export type TopLikedDeliverableItem = {
   id: string;
   title: string;
   description?: string | null;
+  siteUrl?: string;
   likeCount: number;
   viewCount: number;
   href: string;
@@ -31,16 +33,18 @@ type Props = {
 };
 
 export function TopLikedCard({ item, locale, rank }: Props) {
-  const emoji = item.type === "wish" ? "💫" : "🎀";
   const typeLabel =
     item.type === "wish" ? t(labels.feed.wish, locale) : t(labels.feed.deliverable, locale);
 
   return (
     <article className="pin-card top-liked-card">
-      <Link href={item.href} className={`pin-cover pin-cover-type-${item.type}`}>
-        <span className="pin-rank">{rank}</span>
-        <span className="pin-emoji">{emoji}</span>
-      </Link>
+      <CardCover
+        href={item.href}
+        seed={item.id}
+        type={item.type}
+        siteUrl={item.type === "deliverable" ? item.siteUrl : undefined}
+        rank={rank}
+      />
       <div className="pin-body">
         <p className="pin-type">{typeLabel}</p>
         <h3 className="pin-title">

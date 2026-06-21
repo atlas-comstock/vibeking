@@ -2,12 +2,14 @@ import Link from "next/link";
 import type { Wish } from "@vibeking/shared";
 import type { Locale } from "@/lib/locale";
 import { formatBudget, formatDate, labels, t } from "@/lib/i18n";
+import { CardCover } from "./CardCover";
 import { LikeButton } from "./LikeButton";
 import { StatusBadge } from "./StatusBadge";
 
 export function WishCard({ wish, locale }: { wish: Wish; locale: Locale }) {
   return (
-    <article className="card wish-card">
+    <article className="card wish-card wish-card-with-cover">
+      <CardCover href={`/wishes/${wish.id}`} seed={wish.id} type="wish" />
       <div className="card-header">
         <StatusBadge status={wish.status} locale={locale} />
         <span className="meta-muted">{formatDate(wish.createdAt, locale)}</span>

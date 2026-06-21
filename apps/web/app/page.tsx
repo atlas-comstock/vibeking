@@ -38,6 +38,7 @@ export default async function HomePage() {
     likeCount: Number(item.likeCount ?? 0),
     viewCount: Number(item.viewCount ?? 0),
     href: String(item.href ?? `/deliverables/${item.slug}`),
+    siteUrl: item.siteUrl ? String(item.siteUrl) : undefined,
   })) satisfies TopLikedDeliverableItem[];
 
   const items = feed.items;

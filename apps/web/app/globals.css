@@ -476,24 +476,78 @@ h1 {
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 128px;
+  min-height: 168px;
   text-decoration: none;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
 }
 
-.pin-cover-type-wish {
-  background: linear-gradient(145deg, #ffe8f0 0%, #ffc8d8 100%) !important;
+.pin-cover-pattern-0::after,
+.pin-cover-pattern-1::after,
+.pin-cover-pattern-2::after,
+.pin-cover-pattern-3::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
 }
 
-.pin-cover-type-deliverable {
-  background: linear-gradient(145deg, #fff0e0 0%, #ffd8b8 100%) !important;
+.pin-cover-pattern-0::after {
+  background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.65) 0 2px, transparent 3px);
+  background-size: 18px 18px;
 }
 
-.pin-cover-type-site_post {
-  background: linear-gradient(145deg, #fff5e8 0%, #ffe0c8 100%) !important;
+.pin-cover-pattern-1::after {
+  background-image: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.5) 0 3px, transparent 4px);
+  background-size: 24px 24px;
+}
+
+.pin-cover-pattern-2::after {
+  background: linear-gradient(135deg, transparent 0 40%, rgba(255, 255, 255, 0.18) 50%, transparent 60%);
+}
+
+.pin-cover-pattern-3::after {
+  background-image: radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.45), transparent 55%);
+}
+
+.pin-cover-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.pin-cover-favicon {
+  position: relative;
+  z-index: 1;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.55rem;
+  object-fit: contain;
+}
+
+.pin-cover-has-og .pin-emoji,
+.pin-cover-has-favicon .pin-emoji {
+  opacity: 0.15;
+  transform: scale(1.6);
+  filter: blur(0.5px);
+}
+
+.pin-cover-has-og .pin-emoji {
+  display: none;
 }
 
 .pin-emoji {
-  font-size: 2.6rem;
+  position: relative;
+  z-index: 1;
+  font-size: 2.8rem;
   filter: drop-shadow(0 4px 10px rgba(255, 120, 100, 0.2));
   transition: transform 0.2s ease;
 }
@@ -699,6 +753,32 @@ h1 {
 
 .wish-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wish-card-with-cover {
+  overflow: hidden;
+  padding: 0;
+}
+
+.wish-card-with-cover .pin-cover {
+  min-height: 148px;
+}
+
+.wish-card-with-cover .card-header,
+.wish-card-with-cover h3,
+.wish-card-with-cover .card-desc,
+.wish-card-with-cover .tag-row,
+.wish-card-with-cover .card-footer {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.wish-card-with-cover .card-header {
+  padding-top: 0.85rem;
+}
+
+.wish-card-with-cover .card-footer {
+  padding-bottom: 1rem;
 }
 
 .wish-card:hover {
@@ -1035,10 +1115,19 @@ label {
   min-height: 420px;
 }
 
+.preview-frame-wrap-large {
+  min-height: min(78vh, 860px);
+}
+
 .preview-frame {
   width: 100%;
   min-height: 420px;
   border: 0;
+}
+
+.preview-frame-large {
+  min-height: min(78vh, 860px);
+  height: min(78vh, 860px);
 }
 
 .preview-url-wrap {

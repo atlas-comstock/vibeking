@@ -1,7 +1,8 @@
 import Link from "next/link";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Locale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
+import { CardCover } from "./CardCover";
 
 export type FeedCardItem = {
   type: "site_post" | "deliverable" | "wish";
@@ -23,32 +24,24 @@ const TYPE_LABEL = {
   wish: labels.feed.wish,
 } as const;
 
-const TYPE_EMOJI = {
-  site_post: "🌐",
-  deliverable: "🎀",
-  wish: "💫",
-} as const;
-
 function CardLink({
   href,
   className,
-  style,
   children,
 }: {
   href: string;
   className?: string;
-  style?: CSSProperties;
   children: ReactNode;
 }) {
   if (href.startsWith("http")) {
     return (
-      <a href={href} className={className} style={style} target="_blank" rel="noreferrer">
+      <a href={href} className={className} target="_blank" rel="noreferrer">
         {children}
       </a>
     );
   }
   return (
-    <Link href={href} className={className} style={style}>
+    <Link href={href} className={className}>
       {children}
     </Link>
   );
@@ -63,16 +56,15 @@ export function FeedCard({
   locale: Locale;
   index?: number;
 }) {
-  const emoji = item.coverEmoji ?? TYPE_EMOJI[item.type];
-
   return (
     <article className="pin-card" style={{ animationDelay: `${(index % 8) * 40}ms` }}>
-      <CardLink
+      <CardCover
         href={item.href}
-        className={`pin-cover pin-cover-type-${item.type}`}
-      >
-        <span className="pin-emoji">{emoji}</span>
-      </CardLink>
+        seed={item.id}
+        type={item.type}
+        siteUrl={item.siteUrl}
+        coverEmoji={item.coverEmoji}
+      />
       <div className="pin-body">
         <p className="pin-type">{t(TYPE_LABEL[item.type], locale)}</p>
         <h3 className="pin-title">
