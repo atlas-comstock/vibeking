@@ -1,2 +1,24 @@
 .ml-cache/
 .mainline/local.toml
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.next/
+.turbo/
+out/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS / editor
+.DS_Store
+*.log
+
+# pnpm
+pnpm-debug.log*
