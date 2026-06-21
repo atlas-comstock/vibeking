@@ -60,17 +60,23 @@ export default async function NewWishPage() {
             {t(labels.wish.tags, locale)} (comma-separated)
             <input name="tags" className="input" placeholder="landing-page, web" />
           </label>
-          <div className="form-row">
-            <label>
-              {t(labels.wish.budget, locale)} (CNY)
-              <input name="budgetCents" type="number" className="input" min={0} step={1} />
-            </label>
-            <input type="hidden" name="budgetCurrency" value="CNY" />
-            <label>
-              {t(labels.wish.deadline, locale)}
-              <input name="deadline" type="date" className="input" />
-            </label>
-          </div>
+          <label>
+            {t(labels.wish.budget, locale)}
+            <span className="field-hint">{t(labels.wish.budgetHint, locale)}</span>
+            <input
+              name="budgetCents"
+              type="number"
+              className="input"
+              min={0}
+              step={1}
+              placeholder={t(labels.wish.budgetPlaceholder, locale)}
+            />
+          </label>
+          <input type="hidden" name="budgetCurrency" value="CNY" />
+          <label>
+            {t(labels.wish.deadline, locale)}
+            <input name="deadline" type="date" className="input" />
+          </label>
           <button type="submit" className="btn btn-primary">
             {t(labels.wish.create, locale)}
           </button>

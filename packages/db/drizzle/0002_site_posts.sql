@@ -4,8 +4,6 @@ EXCEPTION
   WHEN duplicate_object THEN null;
 END $$;
 
-ALTER TYPE "like_target_type" ADD VALUE IF NOT EXISTS 'site_post';
-
 CREATE TABLE IF NOT EXISTS "site_posts" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
   "author_id" uuid REFERENCES "users"("id") ON DELETE SET NULL,

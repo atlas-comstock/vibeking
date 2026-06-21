@@ -42,6 +42,11 @@ export default async function SkillPage() {
             <pre className="code-block">
               <code>{INSTALL_CMD_PROJECT}</code>
             </pre>
+            <p className="meta-muted" style={{ marginTop: "0.75rem" }}>
+              {locale === "zh"
+                ? "Skill 在开源仓库 packages/skill/，无需单独建库。"
+                : "Skill lives in packages/skill/ of the open-source repo — no separate repo needed."}
+            </p>
           </article>
 
           <article className="card skill-card">

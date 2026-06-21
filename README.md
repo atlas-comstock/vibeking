@@ -58,5 +58,6 @@ Users post wishes on the web — no Skill required.
 ## Design & deploy
 
 - [System design](docs/DESIGN-wish-platform.md) — full spec + 18-PR plan
+- [**Free deployment**](docs/deploy-free.md) — Vercel + Render + Neon + R2 ($0)
 - [Deployment](docs/deploy.md) — Fly.io + Cloudflare staging/prod
 - [Auth](docs/auth.md) — session cookie contract

@@ -17,6 +17,8 @@ metadata:
 
 ## Install (for other agents)
 
+Skill 在 monorepo 的 `packages/skill/`，直接复用开源仓库即可：
+
 ```bash
 npx skills add atlas-comstock/vibeking --skill vibeking-wish -g -y
 ```

@@ -739,6 +739,15 @@ label {
   color: var(--muted);
 }
 
+.field-hint {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
 .form-stack {
   display: grid;
   gap: 1.1rem;

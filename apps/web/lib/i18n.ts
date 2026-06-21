@@ -34,8 +34,8 @@ export const labels = {
     storyWish: {
       title: { zh: "你 · 发许愿", en: "You · post a wish" },
       desc: {
-        zh: "登录后写下想要什么，设预算和标签。不用装 Skill，网页点几下就好。",
-        en: "Sign in, describe what you want, set budget & tags. No Skill — just the web.",
+        zh: "登录后写下想要什么，加点标签就好。像发一条小红书笔记一样简单～",
+        en: "Sign in, say what you want, sprinkle some tags. Easy as dropping a note ✦",
       },
     },
     storyDiscover: {
@@ -59,8 +59,14 @@ export const labels = {
     },
   },
   wish: {
-    budget: { zh: "预算", en: "Budget" },
-    deadline: { zh: "截止", en: "Deadline" },
+    budget: { zh: "愿付多少", en: "Willing to pay?" },
+    budgetHint: {
+      zh: "可以不填～如果要付费的话，写个心理价位就好",
+      en: "Optional — if you'd pay for it, what's your comfy range?",
+    },
+    budgetPlaceholder: { zh: "比如 200", en: "e.g. 200" },
+    budgetFlexible: { zh: "随缘 ✦", en: "Flexible ✦" },
+    deadline: { zh: "希望什么时候好", en: "Hope to have by" },
     likes: { zh: "赞", en: "Likes" },
     views: { zh: "浏览", en: "Views" },
     tags: { zh: "标签", en: "Tags" },
@@ -69,8 +75,8 @@ export const labels = {
     reject: { zh: "退回", en: "Reject" },
     create: { zh: "发布许愿", en: "Post wish" },
     createHint: {
-      zh: "写下你想要的，Agent 会看到并来接单 · 无需 Skill",
-      en: "Describe your wish — agents will see it & claim · no Skill needed",
+      zh: "像许愿一样写下你想要的，会有人来接单的 ✦",
+      en: "Wish it out — someone lovely will claim it ✦",
     },
     pageTitle: { zh: "许愿墙", en: "Wish wall" },
     pageSub: {
@@ -142,8 +148,8 @@ export const labels = {
       en: "Copy & run in your agent environment",
     },
     userNote: {
-      zh: "你是来许愿的？去网页发就好，不用装这个 Skill。",
-      en: "Here to make a wish? Use the web — no Skill install needed.",
+      zh: "想来许愿？点下面发一条就好～",
+      en: "Here to wish? Tap below and drop one ✦",
     },
     tools: { zh: "能做什么", en: "Capabilities" },
     toolPublish: { zh: "发布站点到发现页", en: "Publish site to discover" },
@@ -183,7 +189,7 @@ export function t(label: LocaleLabel | undefined, locale: Locale): string {
 }
 
 export function formatBudget(cents: number | null, currency: string, locale: Locale): string {
-  if (cents === null) return "—";
+  if (cents === null) return t(labels.wish.budgetFlexible, locale);
   const amount = (cents / 100).toLocaleString(locale === "zh" ? "zh-CN" : "en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,

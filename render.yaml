@@ -1,0 +1,52 @@
+# Render Blueprint — free tier API
+# Dashboard → New → Blueprint → select this repo
+services:
+  - type: web
+    name: vibeking-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3001"
+      - key: WISH_PLATFORM_ENABLED
+        value: "true"
+      - key: CLAIMS_ENABLED
+        value: "true"
+      - key: INVITE_ONLY
+        value: "false"
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: WEB_ORIGIN
+        sync: false
+      - key: API_BASE_URL
+        sync: false
+      - key: SITE_BASE_DOMAIN
+        sync: false
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_BUCKET
+        value: vibeking
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: S3_REGION
+        value: auto
+      - key: S3_FORCE_PATH_STYLE
+        value: "false"
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_CALLBACK_URL
+        sync: false
