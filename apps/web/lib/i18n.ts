@@ -139,6 +139,10 @@ export const labels = {
   },
   deliverable: {
     preview: { zh: "预览", en: "Preview" },
+    previewFallback: {
+      zh: "如果预览加载不出来（站点禁止嵌入），可以",
+      en: "If preview is blank (site blocks embed),",
+    },
     visit: { zh: "打开看看", en: "Open" },
     revision: { zh: "版", en: "Rev" },
     claimEnded: { zh: "接单结束", en: "Claim ended" },

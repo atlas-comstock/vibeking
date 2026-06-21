@@ -28,11 +28,23 @@ export function DeliverablePreview({ slug, kind, siteUrl, inlineHtml, locale }: 
 
   if (kind === "url") {
     return (
-      <div className="preview-external card">
-        <p>{t(labels.deliverable.visit, locale)}</p>
-        <a href={siteUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-          {siteUrl}
-        </a>
+      <div className="preview-url-wrap">
+        <div className="preview-frame-wrap">
+          <iframe
+            title={`preview-${slug}`}
+            src={siteUrl}
+            className="preview-frame"
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+        <p className="preview-url-fallback meta-muted">
+          {t(labels.deliverable.previewFallback, locale)}{" "}
+          <a href={siteUrl} target="_blank" rel="noopener noreferrer" className="link-accent">
+            {t(labels.deliverable.visit, locale)} →
+          </a>
+        </p>
       </div>
     );
   }
