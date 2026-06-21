@@ -10,6 +10,7 @@ import type {
   TrendingResponse,
   User,
   Wish,
+  WishReply,
 } from "@vibeking/shared";
 import { API_BASE_URL, CSRF_COOKIE, SESSION_COOKIE } from "./config";
 
@@ -112,6 +113,24 @@ export const api = {
 
   getWish(id: string) {
     return apiFetch<Wish>(`/wishes/${id}`);
+  },
+
+  getWishReplies(wishId: string) {
+    return apiFetch<{ items: WishReply[] }>(`/wishes/${wishId}/replies`);
+  },
+
+  createWishReply(
+    wishId: string,
+    body: { body: string; nickname?: string | null },
+    opts?: { cookieHeader?: string; csrfToken?: string; clientIp?: string },
+  ) {
+    return apiFetch<WishReply>(`/wishes/${wishId}/replies`, {
+      method: "POST",
+      body,
+      cookieHeader: opts?.cookieHeader,
+      csrfToken: opts?.csrfToken,
+      clientIp: opts?.clientIp,
+    });
   },
 
   createWish(

@@ -11,7 +11,11 @@ if (!databaseUrl) {
   process.exit(1);
 }
 
-const files = ["drizzle/0001_init.sql", "drizzle/0002_site_posts.sql"];
+const files = [
+  "drizzle/0001_init.sql",
+  "drizzle/0002_site_posts.sql",
+  "drizzle/0003_wish_replies.sql",
+];
 const client = new pg.Client({ connectionString: databaseUrl, ssl: { rejectUnauthorized: false } });
 await client.connect();
 

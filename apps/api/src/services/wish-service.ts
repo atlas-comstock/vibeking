@@ -1,11 +1,21 @@
 import { and, desc, eq, gt, isNull, lt, or, sql } from "drizzle-orm";
+import { buildSiteUrl } from "@vibeking/publish";
 import {
   AppError,
   WishStatus,
   validatePatchFields,
+  type DeliverableSummary,
   type WishPatchFields,
 } from "@vibeking/shared";
-import { getDb, wishes, users, wishClaims, agentProfiles } from "@vibeking/db";
+import {
+  deliverables,
+  getDb,
+  wishes,
+  users,
+  wishClaims,
+  agentProfiles,
+} from "@vibeking/db";
+import { config } from "../config.js";
 import { decodeCursor, encodeCursor } from "../lib/cursor.js";
 
 export type CreateWishInput = {
@@ -25,15 +35,63 @@ export type ListWishesQuery = {
   sort?: string;
 };
 
+type ActiveClaimRow = {
+  id: string;
+  agentId: string;
+  agentHandle: string | null;
+  agentDisplayName: string;
+  claimedAt: Date;
+  lastActivityAt: Date;
+};
+
+function mapActiveClaim(claim: ActiveClaimRow | null | undefined) {
+  if (!claim) return null;
+  return {
+    id: claim.id,
+    agentId: claim.agentId,
+    agent: {
+      handle: claim.agentHandle ?? "agent",
+      displayName: claim.agentDisplayName,
+    },
+    claimedAt: claim.claimedAt.toISOString(),
+    lastActivityAt: claim.lastActivityAt.toISOString(),
+  };
+}
+
+function mapDeliverableSummary(row: {
+  deliverable: typeof deliverables.$inferSelect;
+  agentHandle: string | null;
+  agentDisplayName: string;
+}): DeliverableSummary {
+  const { deliverable: d } = row;
+  const siteUrl =
+    d.kind === "url" && d.externalUrl
+      ? d.externalUrl
+      : buildSiteUrl(d.slug, config.siteBaseDomain);
+
+  return {
+    id: d.id,
+    slug: d.slug,
+    kind: d.kind,
+    title: d.title,
+    siteUrl,
+    revisionNumber: d.revisionNumber,
+    status: d.status,
+    likeCount: d.likeCount,
+    viewCount: d.viewCount,
+    agent: {
+      handle: row.agentHandle ?? "agent",
+      displayName: row.agentDisplayName,
+    },
+    createdAt: d.createdAt.toISOString(),
+  };
+}
+
 function mapWishRow(
   wish: typeof wishes.$inferSelect,
   author: { id: string; displayName: string },
-  activeClaim?: {
-    id: string;
-    agentId: string;
-    agentHandle: string | null;
-    claimedAt: string;
-  } | null,
+  activeClaim?: ActiveClaimRow | null,
+  deliverableItems: DeliverableSummary[] = [],
 ) {
   return {
     id: wish.id,
@@ -48,7 +106,8 @@ function mapWishRow(
       id: author.id,
       displayName: author.displayName,
     },
-    activeClaim: activeClaim ?? null,
+    activeClaim: mapActiveClaim(activeClaim),
+    deliverables: deliverableItems,
     canonicalDeliverableId: wish.acceptedDeliverableId,
     likeCount: wish.likeCount,
     viewCount: wish.viewCount,
@@ -57,17 +116,36 @@ function mapWishRow(
 }
 
 export async function createWish(authorId: string, input: CreateWishInput) {
+  const title = input.title?.trim();
+  const description = input.description?.trim();
+  if (!title || !description) {
+    throw new AppError("VALIDATION_ERROR", "标题和描述不能为空", 400);
+  }
+  if (
+    input.budgetCents != null &&
+    (Number.isNaN(input.budgetCents) || input.budgetCents < 0)
+  ) {
+    throw new AppError("VALIDATION_ERROR", "预算格式不对", 400);
+  }
+  let deadline: Date | null = null;
+  if (input.deadline) {
+    deadline = new Date(input.deadline);
+    if (Number.isNaN(deadline.getTime())) {
+      throw new AppError("VALIDATION_ERROR", "日期格式不对", 400);
+    }
+  }
+
   const db = getDb();
   const [created] = await db
     .insert(wishes)
     .values({
       authorId,
-      title: input.title,
-      description: input.description,
+      title,
+      description,
       tags: input.tags ?? [],
       budgetCents: input.budgetCents ?? null,
       budgetCurrency: input.budgetCurrency ?? "CNY",
-      deadline: input.deadline ? new Date(input.deadline) : null,
+      deadline,
       status: WishStatus.OPEN,
     })
     .returning();
@@ -172,12 +250,27 @@ export async function getWishById(wishId: string) {
       id: wishClaims.id,
       agentId: wishClaims.agentId,
       claimedAt: wishClaims.claimedAt,
-      handle: agentProfiles.handle,
+      lastActivityAt: wishClaims.lastActivityAt,
+      agentHandle: agentProfiles.handle,
+      agentDisplayName: users.displayName,
     })
     .from(wishClaims)
+    .innerJoin(users, eq(users.id, wishClaims.agentId))
     .leftJoin(agentProfiles, eq(agentProfiles.userId, wishClaims.agentId))
     .where(and(eq(wishClaims.wishId, wishId), eq(wishClaims.status, "active")))
     .limit(1);
+
+  const deliverableRows = await db
+    .select({
+      deliverable: deliverables,
+      agentHandle: agentProfiles.handle,
+      agentDisplayName: users.displayName,
+    })
+    .from(deliverables)
+    .innerJoin(users, eq(deliverables.agentId, users.id))
+    .leftJoin(agentProfiles, eq(agentProfiles.userId, users.id))
+    .where(eq(deliverables.wishId, wishId))
+    .orderBy(desc(deliverables.revisionNumber));
 
   return mapWishRow(
     row.wish,
@@ -186,10 +279,13 @@ export async function getWishById(wishId: string) {
       ? {
           id: claim.id,
           agentId: claim.agentId,
-          agentHandle: claim.handle,
-          claimedAt: claim.claimedAt.toISOString(),
+          agentHandle: claim.agentHandle,
+          agentDisplayName: claim.agentDisplayName,
+          claimedAt: claim.claimedAt,
+          lastActivityAt: claim.lastActivityAt,
         }
       : null,
+    deliverableRows.map(mapDeliverableSummary),
   );
 }
 

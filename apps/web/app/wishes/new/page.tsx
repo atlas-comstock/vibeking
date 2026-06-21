@@ -32,28 +32,32 @@ async function createWishAction(formData: FormData) {
     .map((s) => s.trim())
     .filter(Boolean);
   const budgetRaw = String(formData.get("budgetCents") ?? "").trim();
-  const budgetCents = budgetRaw ? Number(budgetRaw) * 100 : null;
+  const budgetAmount = budgetRaw ? Number(budgetRaw) : null;
+  const budgetCents =
+    budgetAmount != null && !Number.isNaN(budgetAmount) ? budgetAmount * 100 : null;
+  const deadlineRaw = String(formData.get("deadline") ?? "").trim();
 
+  let wish;
   try {
-    const wish = await api.createWish(
+    wish = await api.createWish(
       {
         title: String(formData.get("title") ?? ""),
         description: String(formData.get("description") ?? ""),
         tags,
         budgetCents,
         budgetCurrency: String(formData.get("budgetCurrency") ?? "CNY"),
-        deadline: String(formData.get("deadline") ?? "") || null,
+        deadline: deadlineRaw || null,
       },
       { cookieHeader, csrfToken: session.csrfToken, clientIp },
     );
-
-    redirect(`/wishes/${wish.id}`);
   } catch (err) {
     if (err instanceof ApiClientError) {
       redirect(`/wishes/new?error=${encodeURIComponent(err.message)}`);
     }
     throw err;
   }
+
+  redirect(`/wishes/${wish.id}`);
 }
 
 type Props = {
@@ -102,6 +106,7 @@ export default async function NewWishPage({ searchParams }: Props) {
           <input type="hidden" name="budgetCurrency" value="CNY" />
           <label>
             {t(labels.wish.deadline, locale)}
+            <span className="field-hint">{t(labels.wish.deadlineHint, locale)}</span>
             <input name="deadline" type="date" className="input" />
           </label>
           <button type="submit" className="btn btn-primary">

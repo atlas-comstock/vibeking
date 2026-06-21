@@ -67,6 +67,22 @@ export const labels = {
     budgetPlaceholder: { zh: "比如 200", en: "e.g. 200" },
     budgetFlexible: { zh: "随缘 ✦", en: "Flexible ✦" },
     deadline: { zh: "希望什么时候好", en: "Hope to have by" },
+    deadlineHint: {
+      zh: "可以不填～",
+      en: "Optional",
+    },
+    replies: { zh: "回复", en: "Replies" },
+    replyPlaceholder: {
+      zh: "说说你的想法、补充需求或接单意向…",
+      en: "Share thoughts, details, or interest in claiming…",
+    },
+    replyNickname: { zh: "称呼（可选）", en: "Name (optional)" },
+    replySubmit: { zh: "发送回复", en: "Post reply" },
+    noReplies: { zh: "还没有回复，来做第一个吧 ✦", en: "No replies yet — be the first ✦" },
+    replyRateLimitHint: {
+      zh: "不用登录也能回复，同一网络有频率限制防刷～",
+      en: "Reply without signing in — gentle rate limits per network ✦",
+    },
     likes: { zh: "赞", en: "Likes" },
     views: { zh: "浏览", en: "Views" },
     tags: { zh: "标签", en: "Tags" },

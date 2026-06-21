@@ -25,6 +25,7 @@ import { releaseRoutes } from "./release.js";
 import { statusRoutes } from "./status.js";
 import { acceptRoutes } from "./accept.js";
 import { rejectRoutes } from "./reject.js";
+import { replyRoutes } from "./replies.js";
 
 export const wishesRoutes = new Hono<AppEnv>();
 
@@ -127,6 +128,7 @@ wishesRoutes.delete("/:id", requireAuth, async (c) => {
   }
 });
 
+wishesRoutes.route("/:id", replyRoutes);
 wishesRoutes.route("/:id", claimRoutes);
 wishesRoutes.route("/:id", releaseRoutes);
 wishesRoutes.route("/:id", statusRoutes);

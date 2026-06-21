@@ -46,6 +46,13 @@ export type DeliverableSummary = {
   createdAt: string;
 };
 
+export type WishReply = {
+  id: string;
+  body: string;
+  displayName: string;
+  createdAt: string;
+};
+
 export type Wish = {
   id: string;
   title: string;

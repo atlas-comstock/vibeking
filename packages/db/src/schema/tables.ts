@@ -77,6 +77,24 @@ export const wishes = pgTable(
   ],
 );
 
+export const wishReplies = pgTable(
+  "wish_replies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    wishId: uuid("wish_id")
+      .notNull()
+      .references(() => wishes.id, { onDelete: "cascade" }),
+    authorId: uuid("author_id")
+      .notNull()
+      .references(() => users.id),
+    body: text("body").notNull(),
+    nickname: varchar("nickname", { length: 50 }),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_wish_replies_wish_created").on(t.wishId, t.createdAt)],
+);
+
 export const wishClaims = pgTable(
   "wish_claims",
   {

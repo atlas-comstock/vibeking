@@ -1,22 +1,34 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 import { Nav } from "@/components/Nav";
 import { StatusBadge } from "@/components/StatusBadge";
 import { WishActions } from "@/components/WishActions";
-import { api } from "@/lib/api";
+import { WishReplies } from "@/components/WishReplies";
+import { api, ApiClientError, buildCookieHeader } from "@/lib/api";
 import { formatBudget, formatDate, labels, t } from "@/lib/i18n";
 import { getLocale } from "@/lib/locale";
 import { getSession } from "@/lib/session";
 
+function resolveClientIp(headerStore: Awaited<ReturnType<typeof headers>>) {
+  return (
+    headerStore.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    headerStore.get("x-real-ip") ??
+    undefined
+  );
+}
+
 type Props = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ replyError?: string }>;
 };
 
-export default async function WishDetailPage({ params }: Props) {
+export default async function WishDetailPage({ params, searchParams }: Props) {
   const locale = await getLocale();
   const { id } = await params;
+  const query = await searchParams;
   const session = await getSession();
 
   let wish;
@@ -26,7 +38,42 @@ export default async function WishDetailPage({ params }: Props) {
     notFound();
   }
 
+  const { items: replies } = await api.getWishReplies(id).catch(() => ({ items: [] }));
+
   const canModerate = session.user?.id === wish.author.id;
+
+  async function replyAction(formData: FormData) {
+    "use server";
+
+    const headerStore = await headers();
+    const clientIp = resolveClientIp(headerStore);
+    const replySession = await getSession();
+    const cookieHeader = replySession.user
+      ? buildCookieHeader(replySession.sessionId, replySession.csrfToken)
+      : undefined;
+
+    try {
+      await api.createWishReply(
+        id,
+        {
+          body: String(formData.get("body") ?? ""),
+          nickname: String(formData.get("nickname") ?? "") || null,
+        },
+        {
+          cookieHeader,
+          csrfToken: replySession.csrfToken,
+          clientIp,
+        },
+      );
+    } catch (err) {
+      if (err instanceof ApiClientError) {
+        redirect(`/wishes/${id}?replyError=${encodeURIComponent(err.message)}`);
+      }
+      throw err;
+    }
+
+    redirect(`/wishes/${id}`);
+  }
 
   return (
     <>
@@ -76,7 +123,7 @@ export default async function WishDetailPage({ params }: Props) {
 
         <section className="section">
           <h2>{t(labels.wish.deliverables, locale)}</h2>
-          {wish.deliverables.length === 0 ? (
+          {(wish.deliverables ?? []).length === 0 ? (
             <p className="empty-state">—</p>
           ) : (
             <ul className="deliverable-list">
@@ -101,6 +148,13 @@ export default async function WishDetailPage({ params }: Props) {
             </ul>
           )}
         </section>
+
+        <WishReplies
+          locale={locale}
+          replies={replies}
+          error={query.replyError}
+          replyAction={replyAction}
+        />
       </main>
     </>
   );
