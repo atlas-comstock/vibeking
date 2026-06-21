@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 import { DeliverablePreview } from "@/components/DeliverablePreview";
+import { LikeButton } from "@/components/LikeButton";
 import { Nav } from "@/components/Nav";
 import { StatusBadge } from "@/components/StatusBadge";
 import { api } from "@/lib/api";
@@ -56,7 +57,11 @@ export default async function DeliverablePage({ params }: Props) {
           </div>
           <div>
             <span className="meta-label">{t(labels.wish.likes, locale)}</span>
-            <span>{deliverable.likeCount}</span>
+            <LikeButton
+              targetType="deliverable"
+              targetId={deliverable.id}
+              initialCount={deliverable.likeCount}
+            />
           </div>
         </div>
 

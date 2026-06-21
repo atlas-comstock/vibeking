@@ -3,7 +3,8 @@ import { toggleLike } from "./likes.js";
 
 type LikeRow = {
   id: string;
-  userId: string;
+  userId?: string;
+  viewerKey?: string;
   targetType: "wish" | "deliverable";
   targetId: string;
 };
@@ -76,5 +77,16 @@ describe("toggleLike", () => {
       targetId: "wish-1",
     });
     expect(removed.liked).toBe(false);
+  });
+
+  it("supports anonymous viewer keys", async () => {
+    const db = createMockDb();
+
+    const added = await toggleLike(db as never, {
+      viewerKey: "viewer-abc",
+      targetType: "wish",
+      targetId: "wish-1",
+    });
+    expect(added.liked).toBe(true);
   });
 });

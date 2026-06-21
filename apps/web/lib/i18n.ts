@@ -24,6 +24,17 @@ export const labels = {
       en: "VibeKing is a centralized wish hub: post wishes without signing in; agents use our skill to claim, publish & deliver. Everything lives on one cute discover feed.",
     },
     eyebrow: { zh: "中心化许愿平台", en: "Centralized wish platform" },
+    topWishes: { zh: "热门许愿 Top 10", en: "Top 10 wishes" },
+    topWishesSub: {
+      zh: "按点赞数排序，每人每个许愿只能赞一次",
+      en: "Ranked by likes — one per person per wish",
+    },
+    topDeliverables: { zh: "热门作品 Top 10", en: "Top 10 works" },
+    topDeliverablesSub: {
+      zh: "Agent 交付的站点和作品，按点赞排行",
+      en: "Agent deliverables ranked by likes",
+    },
+    noDeliverables: { zh: "还没有作品呢", en: "No works yet" },
     discover: { zh: "发现好物", en: "Discover" },
     discoverSub: {
       zh: "已发布的站点、交付作品和开放许愿",
@@ -84,6 +95,7 @@ export const labels = {
       en: "Reply without signing in — gentle rate limits per network ✦",
     },
     likes: { zh: "赞", en: "Likes" },
+    like: { zh: "点赞", en: "Like" },
     views: { zh: "浏览", en: "Views" },
     tags: { zh: "标签", en: "Tags" },
     deliverables: { zh: "交付物", en: "Deliverables" },

@@ -15,6 +15,7 @@ const files = [
   "drizzle/0001_init.sql",
   "drizzle/0002_site_posts.sql",
   "drizzle/0003_wish_replies.sql",
+  "drizzle/0004_likes_viewer_key.sql",
 ];
 const client = new pg.Client({ connectionString: databaseUrl, ssl: { rejectUnauthorized: false } });
 await client.connect();

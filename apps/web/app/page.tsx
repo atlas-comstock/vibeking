@@ -4,6 +4,7 @@ import { EmptyDiscover } from "@/components/EmptyDiscover";
 import { FeedCard } from "@/components/FeedCard";
 import { ProductStory } from "@/components/ProductStory";
 import { SiteFooter } from "@/components/SiteFooter";
+import { TopLikedCard, type TopLikedDeliverableItem, type TopLikedWishItem } from "@/components/TopLikedCard";
 import { api } from "@/lib/api";
 import { getLocale } from "@/lib/locale";
 import { labels, t } from "@/lib/i18n";
@@ -12,7 +13,33 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const feed = await api.getFeed(24, locale).catch(() => ({ items: [] }));
+  const [topWishes, topDeliverables, feed] = await Promise.all([
+    api.getTopLiked("wishes", 10).catch(() => ({ items: [] })),
+    api.getTopLiked("deliverables", 10).catch(() => ({ items: [] })),
+    api.getFeed(24, locale).catch(() => ({ items: [] })),
+  ]);
+
+  const wishItems = topWishes.items.map((item) => ({
+    type: "wish" as const,
+    id: String(item.id),
+    title: String(item.title),
+    description: String(item.description ?? ""),
+    tags: Array.isArray(item.tags) ? (item.tags as string[]) : [],
+    likeCount: Number(item.likeCount ?? 0),
+    viewCount: Number(item.viewCount ?? 0),
+    href: String(item.href ?? `/wishes/${item.id}`),
+  })) satisfies TopLikedWishItem[];
+
+  const deliverableItems = topDeliverables.items.map((item) => ({
+    type: "deliverable" as const,
+    id: String(item.id),
+    title: String(item.title),
+    description: item.description ? String(item.description) : null,
+    likeCount: Number(item.likeCount ?? 0),
+    viewCount: Number(item.viewCount ?? 0),
+    href: String(item.href ?? `/deliverables/${item.slug}`),
+  })) satisfies TopLikedDeliverableItem[];
+
   const items = feed.items;
 
   return (
@@ -36,6 +63,45 @@ export default async function HomePage() {
         </section>
 
         <ProductStory locale={locale} />
+
+        <section className="section">
+          <div className="section-header">
+            <div>
+              <h2>{t(labels.home.topWishes, locale)}</h2>
+              <p className="section-sub">{t(labels.home.topWishesSub, locale)}</p>
+            </div>
+            <Link href="/wishes" className="link-accent">
+              {t(labels.home.viewAll, locale)} →
+            </Link>
+          </div>
+          {wishItems.length === 0 ? (
+            <p className="empty-state">{t(labels.wish.noWishes, locale)}</p>
+          ) : (
+            <div className="masonry">
+              {wishItems.map((item, i) => (
+                <TopLikedCard key={item.id} item={item} locale={locale} rank={i + 1} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="section">
+          <div className="section-header">
+            <div>
+              <h2>{t(labels.home.topDeliverables, locale)}</h2>
+              <p className="section-sub">{t(labels.home.topDeliverablesSub, locale)}</p>
+            </div>
+          </div>
+          {deliverableItems.length === 0 ? (
+            <p className="empty-state">{t(labels.home.noDeliverables, locale)}</p>
+          ) : (
+            <div className="masonry">
+              {deliverableItems.map((item, i) => (
+                <TopLikedCard key={item.id} item={item} locale={locale} rank={i + 1} />
+              ))}
+            </div>
+          )}
+        </section>
 
         <section className="section">
           <div className="section-header">

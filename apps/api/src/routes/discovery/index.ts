@@ -3,10 +3,23 @@ import type { AppEnv } from "../../middleware/auth.js";
 import {
   getItemsByTag,
   getPopularTags,
+  getTopLikedDeliverables,
+  getTopLikedWishes,
   getTrending,
 } from "../../services/trending-service.js";
 
 export const discoveryRouter = new Hono<AppEnv>();
+
+discoveryRouter.get("/top", async (c) => {
+  const type = c.req.query("type") === "deliverables" ? "deliverables" : "wishes";
+  const limit = Math.min(Number(c.req.query("limit") ?? 10), 20);
+  const payload =
+    type === "deliverables"
+      ? await getTopLikedDeliverables(limit)
+      : await getTopLikedWishes(limit);
+  c.header("Cache-Control", "public, max-age=60, stale-while-revalidate=240");
+  return c.json(payload);
+});
 
 discoveryRouter.get("/trending", async (c) => {
   const type = c.req.query("type") === "deliverables" ? "deliverables" : "wishes";

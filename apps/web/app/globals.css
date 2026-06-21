@@ -542,6 +542,76 @@ h1 {
   font-weight: 600;
 }
 
+.pin-meta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.pin-rank {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.like-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(236, 72, 153, 0.35);
+  color: var(--accent);
+}
+
+.like-btn-active {
+  color: #e11d7a;
+  border-color: rgba(225, 29, 122, 0.25);
+  background: rgba(255, 240, 247, 0.95);
+}
+
+.like-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.card-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.card-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* ── Cards ── */
 
 .card {

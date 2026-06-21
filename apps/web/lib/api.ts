@@ -256,16 +256,38 @@ export const api = {
     });
   },
 
+  checkLike(
+    targetType: "wish" | "deliverable",
+    targetId: string,
+    opts?: { cookieHeader?: string; clientIp?: string },
+  ) {
+    const search = new URLSearchParams({ targetType, targetId });
+    return apiFetch<{ liked: boolean }>(`/likes/check?${search}`, {
+      cookieHeader: opts?.cookieHeader,
+      clientIp: opts?.clientIp,
+    });
+  },
+
   toggleLike(
     body: { targetType: "wish" | "deliverable"; targetId: string },
-    cookieHeader?: string,
-    csrfToken?: string,
+    opts?: { cookieHeader?: string; csrfToken?: string; clientIp?: string },
   ) {
     return apiFetch<LikeToggleResult>("/likes", {
       method: "POST",
       body,
-      cookieHeader,
-      csrfToken,
+      cookieHeader: opts?.cookieHeader,
+      csrfToken: opts?.csrfToken,
+      clientIp: opts?.clientIp,
+    });
+  },
+
+  getTopLiked(type: "wishes" | "deliverables", limit = 10) {
+    const search = new URLSearchParams({
+      type,
+      limit: String(limit),
+    });
+    return apiFetch<{ items: Array<Record<string, unknown>> }>(`/discovery/top?${search}`, {
+      cache: "no-store",
     });
   },
 

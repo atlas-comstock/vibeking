@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Wish } from "@vibeking/shared";
 import type { Locale } from "@/lib/locale";
 import { formatBudget, formatDate, labels, t } from "@/lib/i18n";
+import { LikeButton } from "./LikeButton";
 import { StatusBadge } from "./StatusBadge";
 
 export function WishCard({ wish, locale }: { wish: Wish; locale: Locale }) {
@@ -22,13 +23,14 @@ export function WishCard({ wish, locale }: { wish: Wish; locale: Locale }) {
           </span>
         ))}
       </div>
-      <div className="card-footer">
+      <div className="card-footer card-footer-actions">
         <span>
           {t(labels.wish.budget, locale)}: {formatBudget(wish.budgetCents, wish.budgetCurrency, locale)}
         </span>
-        <span>
-          ♡ {wish.likeCount} · ◎ {wish.viewCount}
-        </span>
+        <div className="card-actions">
+          <LikeButton targetType="wish" targetId={wish.id} initialCount={wish.likeCount} />
+          <span className="meta-muted">◎ {wish.viewCount}</span>
+        </div>
       </div>
     </article>
   );

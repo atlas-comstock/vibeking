@@ -95,6 +95,77 @@ export async function refreshTrendingCache(): Promise<void> {
   await cache.set("trending:deliverables", JSON.stringify(deliverablesPayload), 3600);
 }
 
+export async function getTopLikedWishes(limit: number) {
+  const db = getDb();
+  const rows = await db
+    .select({
+      id: wishes.id,
+      title: wishes.title,
+      description: wishes.description,
+      tags: wishes.tags,
+      status: wishes.status,
+      likeCount: wishes.likeCount,
+      viewCount: wishes.viewCount,
+      createdAt: wishes.createdAt,
+    })
+    .from(wishes)
+    .where(isNull(wishes.deletedAt))
+    .orderBy(desc(wishes.likeCount), desc(wishes.createdAt))
+    .limit(limit);
+
+  return {
+    items: rows.map((wish) => ({
+      id: wish.id,
+      title: wish.title,
+      description: wish.description,
+      tags: wish.tags,
+      status: wish.status,
+      likeCount: wish.likeCount,
+      viewCount: wish.viewCount,
+      createdAt: wish.createdAt.toISOString(),
+      href: `/wishes/${wish.id}`,
+    })),
+  };
+}
+
+export async function getTopLikedDeliverables(limit: number) {
+  const db = getDb();
+  const rows = await db
+    .select({
+      id: deliverables.id,
+      slug: deliverables.slug,
+      title: deliverables.title,
+      description: deliverables.description,
+      kind: deliverables.kind,
+      externalUrl: deliverables.externalUrl,
+      likeCount: deliverables.likeCount,
+      viewCount: deliverables.viewCount,
+      createdAt: deliverables.createdAt,
+    })
+    .from(deliverables)
+    .where(eq(deliverables.status, "live"))
+    .orderBy(desc(deliverables.likeCount), desc(deliverables.createdAt))
+    .limit(limit);
+
+  return {
+    items: rows.map((item) => ({
+      id: item.id,
+      slug: item.slug,
+      title: item.title || item.slug,
+      description: item.description,
+      kind: item.kind,
+      likeCount: item.likeCount,
+      viewCount: item.viewCount,
+      createdAt: item.createdAt.toISOString(),
+      href: `/deliverables/${item.slug}`,
+      siteUrl:
+        item.kind === "url" && item.externalUrl
+          ? item.externalUrl
+          : `https://${item.slug}.vibeking.dev/`,
+    })),
+  };
+}
+
 export async function getTrending(type: "wishes" | "deliverables", limit: number) {
   const key = `trending:${type}`;
   const raw = await cache.get(key);

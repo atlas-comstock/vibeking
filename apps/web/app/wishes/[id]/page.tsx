@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 import { Nav } from "@/components/Nav";
 import { StatusBadge } from "@/components/StatusBadge";
+import { LikeButton } from "@/components/LikeButton";
 import { WishActions } from "@/components/WishActions";
 import { WishReplies } from "@/components/WishReplies";
 import { api, ApiClientError, buildCookieHeader } from "@/lib/api";
@@ -97,7 +98,7 @@ export default async function WishDetailPage({ params, searchParams }: Props) {
           </div>
           <div>
             <span className="meta-label">{t(labels.wish.likes, locale)}</span>
-            <span>{wish.likeCount}</span>
+            <LikeButton targetType="wish" targetId={wish.id} initialCount={wish.likeCount} />
           </div>
           <div>
             <span className="meta-label">{t(labels.wish.views, locale)}</span>

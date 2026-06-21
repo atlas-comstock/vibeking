@@ -19,6 +19,15 @@ export function computeViewerKey(c: Context, sessionToken?: string): string {
   return createHash("sha256").update(`${ip}:${ua}:${bucket}`).digest("hex");
 }
 
+export function computeLikeViewerKey(c: Context): string {
+  const ip = getClientIp(c);
+  const ua = c.req.header("user-agent") ?? "";
+  const acceptLang = c.req.header("accept-language") ?? "";
+  return createHash("sha256")
+    .update(`like:${ip}:${ua}:${acceptLang}`)
+    .digest("hex");
+}
+
 export async function recordWishView(
   wishId: string,
   viewerKey: string,

@@ -177,9 +177,8 @@ export const likes = pgTable(
   "likes",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    userId: uuid("user_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+    viewerKey: varchar("viewer_key", { length: 64 }),
     targetType: likeTargetTypeEnum("target_type").notNull(),
     targetId: uuid("target_id").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -187,6 +186,7 @@ export const likes = pgTable(
   (t) => [
     index("idx_likes_target").on(t.targetType, t.targetId),
     uniqueIndex("idx_likes_user_target").on(t.userId, t.targetType, t.targetId),
+    uniqueIndex("idx_likes_viewer_target").on(t.viewerKey, t.targetType, t.targetId),
   ],
 );
 
