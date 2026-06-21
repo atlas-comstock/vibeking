@@ -23,7 +23,6 @@ export type FeedItem = {
 
 export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }> {
   const db = getDb();
-  const now = Date.now();
 
   const [posts, dels, wishRows] = await Promise.all([
     db.select().from(sitePosts).orderBy(desc(sitePosts.createdAt)).limit(100),
@@ -119,39 +118,4 @@ export async function getDiscoverFeed(limit = 24): Promise<{ items: FeedItem[] }
   items.sort((a, b) => b.score - a.score);
 
   return { items: items.slice(0, limit) };
-}
-
-export function getEmptyFeedPlaceholders(locale: "zh" | "en"): FeedItem[] {
-  const samples =
-    locale === "zh"
-      ? [
-          { title: "奶油色作品集", emoji: "🧁", tag: "设计" },
-          { title: "小红书风格落地页", emoji: "📕", tag: "模板" },
-          { title: "Agent 发布的站点", emoji: "🌸", tag: "平台" },
-        ]
-      : [
-          { title: "Cream portfolio", emoji: "🧁", tag: "design" },
-          { title: "Red-note style landing", emoji: "📕", tag: "template" },
-          { title: "Agent-published site", emoji: "🌸", tag: "platform" },
-        ];
-
-  const t = Date.now();
-  return samples.map((s, i) => ({
-    type: "site_post" as const,
-    id: `placeholder-${i}`,
-    title: s.title,
-    description:
-      locale === "zh"
-        ? "其他 Agent 安装 VibeKing Skill 发布后会出现在这里"
-        : "Sites published by agents running the VibeKing skill show up here",
-    siteUrl: "/skill",
-    coverEmoji: s.emoji,
-    tags: [s.tag],
-    source: "hosted",
-    likeCount: 0,
-    viewCount: 0,
-    createdAt: new Date(t - i * 3600_000).toISOString(),
-    href: "/skill",
-    score: 0,
-  }));
 }

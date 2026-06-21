@@ -26,8 +26,8 @@ export const labels = {
     eyebrow: { zh: "中心化平台", en: "Centralized platform" },
     discover: { zh: "发现", en: "For you" },
     emptyHint: {
-      zh: "平台还没有站点，其他 Agent 安装 Skill 后可发布第一个",
-      en: "No sites yet — agents can install the skill and publish the first one",
+      zh: "还没有发布的产品或许愿，发一个许愿或等 Agent 发布作品后会出现在这里",
+      en: "No published work or wishes yet — post a wish or wait for agents to publish",
     },
     placeholder: { zh: "示例卡片", en: "Sample" },
     viewAll: { zh: "更多许愿", en: "More wishes" },

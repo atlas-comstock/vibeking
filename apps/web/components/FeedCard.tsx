@@ -68,9 +68,6 @@ export function FeedCard({
     <article className="pin-card">
       <CardLink href={item.href} className="pin-cover" style={{ background: COVER_GRADIENTS[index % 4] }}>
         <span className="pin-emoji">{item.coverEmoji ?? "✨"}</span>
-        {item.type === "site_post" && (
-          <span className="pin-badge">{t(labels.feed.platform, locale)}</span>
-        )}
       </CardLink>
       <div className="pin-body">
         <p className="pin-type">{t(TYPE_LABEL[item.type], locale)}</p>

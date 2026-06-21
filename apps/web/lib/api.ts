@@ -164,7 +164,6 @@ export const api = {
         href: string;
         score?: number;
       }>;
-      placeholder?: boolean;
     }>(`/feed?limit=${limit}&locale=${locale}`, { cache: "no-store" });
   },
 
