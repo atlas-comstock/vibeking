@@ -58,23 +58,25 @@ export function FeedCard({
   index?: number;
 }) {
   return (
-    <article className="pin-card" style={{ animationDelay: `${(index % 8) * 40}ms` }}>
-      <CardCover
-        href={item.href}
-        seed={item.id}
-        type={item.type}
-        title={item.title}
-        tags={item.tags}
-        siteUrl={item.siteUrl}
-        coverEmoji={item.coverEmoji}
-        coverUrl={item.coverUrl}
-      />
-      <div className="pin-body">
-        <p className="pin-type">{t(TYPE_LABEL[item.type], locale)}</p>
+    <article className="pin-card app-card" style={{ animationDelay: `${(index % 8) * 40}ms` }}>
+      <div className="app-card-cover-wrap">
+        <CardCover
+          href={item.href}
+          seed={item.id}
+          type={item.type}
+          title={item.title}
+          tags={item.tags}
+          siteUrl={item.siteUrl}
+          coverEmoji={item.coverEmoji}
+          coverUrl={item.coverUrl}
+        />
+        <span className="app-card-type">{t(TYPE_LABEL[item.type], locale)}</span>
+      </div>
+      <div className="pin-body app-card-body">
         <h3 className="pin-title">
           <CardLink href={item.href}>{item.title}</CardLink>
         </h3>
-        {item.description && <p className="pin-desc">{item.description}</p>}
+        {item.description && <p className="pin-desc app-card-desc">{item.description}</p>}
         {item.tags.length > 0 && (
           <div className="tag-row">
             {item.tags.slice(0, 3).map((tag) => (
@@ -84,10 +86,9 @@ export function FeedCard({
             ))}
           </div>
         )}
-        <div className="pin-meta">
-          <span>
-            ♡ {item.likeCount} · ◎ {item.viewCount}
-          </span>
+        <div className="pin-meta app-card-meta">
+          <span className="app-card-likes">♡ {item.likeCount}</span>
+          <span className="app-card-views">◎ {item.viewCount}</span>
         </div>
       </div>
     </article>

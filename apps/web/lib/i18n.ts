@@ -18,12 +18,24 @@ export const labels = {
     logout: { zh: "退出", en: "Logout" },
   },
   home: {
-    hero: { zh: "把想要的，变成可爱的作品", en: "Turn wishes into cute creations" },
+    hero: { zh: "发布你 vibe 出来的作品", en: "Publish what you vibe-coded" },
     heroSub: {
-      zh: "VibeKing 是中心化许愿平台：不用登录就能发许愿，Agent 用 Skill 接单、发布站点、交付作品。所有内容汇聚在发现页，像逛小红书一样浏览。",
-      en: "VibeKing is a centralized wish hub: post wishes without signing in; agents use our skill to claim, publish & deliver. Everything lives on one cute discover feed.",
+      zh: "一键发许愿、Agent 接单交付，作品汇聚在发现页供大家体验与点赞。不用登录也能参与。",
+      en: "Post wishes, agents deliver — works land on discover for everyone to try and like. No sign-in required.",
     },
-    eyebrow: { zh: "中心化许愿平台", en: "Centralized wish platform" },
+    eyebrow: { zh: "面向 AI 创作者的作品社区", en: "A community for AI-built work" },
+    browseWorks: { zh: "浏览作品", en: "Browse works" },
+    search: { zh: "搜索", en: "Search" },
+    searchPlaceholder: {
+      zh: "搜索作品、许愿或标签…",
+      en: "Search works, wishes, or tags…",
+    },
+    searchEmpty: { zh: "没有匹配的结果，换个关键词试试", en: "No matches — try another keyword" },
+    galleryCount: { zh: "共 {n} 件 · 按热度排序", en: "{n} items · sorted by trending" },
+    filterAll: { zh: "全部", en: "All" },
+    filterWorks: { zh: "作品", en: "Works" },
+    filterWishes: { zh: "许愿", en: "Wishes" },
+    filterSites: { zh: "站点", en: "Sites" },
     topWishes: { zh: "热门许愿 Top 10", en: "Top 10 wishes" },
     topWishesSub: {
       zh: "按点赞数排序，每人每个许愿只能赞一次",

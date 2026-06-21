@@ -18,7 +18,7 @@ export async function Nav() {
           </span>
         </Link>
         <nav className="nav-links">
-          <Link href="/" className="nav-link">
+          <Link href="/#gallery" className="nav-link">
             {t(labels.nav.discover, locale)}
           </Link>
           <Link href="/wishes" className="nav-link">
